@@ -1,9 +1,16 @@
-name: "my website"
+name: "KPI Ventas"
 output_dir: "."
 navbar:
-title: "My Website"
-left:
-    - text: "Home"
+  title: "KPI VENTAS"
+  left:
+    - text: "INTRODUCCIÓN"
       href: index.html
-    - text: "About"
+    - text: "OBJETIVO"
       href: about.html
+    - text: "ORGANIZACIÓN"
+      href: organizacion.html
+    
+output:
+  html_document:
+    theme: united
+    highlight: textmate

@@ -1,5 +1,14 @@
 ---
-title: "My Website"
+title: "Introducción"
 ---
 
-Hello, Website!
+En el presente trabajo, se analiza un set de datos correspondiente a un nuevo Supermercado ubicado en Guanajuato, Mexico. Dicho dataset, contiene información de las ventas ($ mexicanos) en las siguientes variables:
+
+- **Folio**: ID del ticket de venta
+- **Hora**: Datetime de la venta 
+- **Total**: Monto ($) ticket de venta
+- **Pago**: Monto ($) abonado por el cliente
+- **Cajero**: Código de ID del cajero
+
+La selección del presente conjunto de datos ha sido en forma asaroza, su ubicación digital es la siguiente:
+[Supermarket Sales](https://www.kaggle.com/datasets/agasca/retail-sales).
