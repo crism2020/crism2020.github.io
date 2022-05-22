@@ -219,7 +219,7 @@ calibration_table %>%
 ```
 
 El resultado de los cuatro algoritmos utilizados, determina que el algoritmo "prophet" obtiene valores más óptimos en la predicción de valores, con un **mae** relativamente bajo y un **rsq** de 0.8.
-La proyección de ventas @ días es la siguiente:
+La proyección de ventas @ 30 días es la siguiente:
 
 # Proyección
 
