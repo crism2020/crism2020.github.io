@@ -2,7 +2,7 @@
 title: "Introducción"
 ---
 
-En el presente trabajo, se analiza un set de datos correspondiente a un nuevo Supermercado ubicado en Guanajuato, Mexico. Dicho dataset, contiene información de las ventas ($ mexicanos) en las siguientes variables:
+En el presente trabajo, se analiza un set de datos correspondiente a un nuevo Supermercado ubicado en Guanajuato, México. Dicho dataset, contiene información de las ventas ($ mexicanos) realizadas desde mayo @ agosto del 2018. Las variables de análisis son las siguientes:
 
 - **Folio**: ID del ticket de venta
 - **Hora**: Datetime de la venta 
@@ -10,5 +10,31 @@ En el presente trabajo, se analiza un set de datos correspondiente a un nuevo Su
 - **Pago**: Monto ($) abonado por el cliente
 - **Cajero**: Código de ID del cajero
 
-La selección del presente conjunto de datos ha sido en forma asaroza, su ubicación digital es la siguiente:
+La selección del presente conjunto de datos ha sido en forma azarosa, su ubicación digital es la siguiente:
 [Supermarket Sales](https://www.kaggle.com/datasets/agasca/retail-sales).
+
+A continuación, se muestra en un mapa la ubicación de Guanajuato:
+
+```{r}
+library(sf)
+library(leaflet)
+library(leaflet.extras)
+
+nombre<-"Guanajuato"
+latitud=21.0181
+longitud=-101.258
+conj=data.frame(nombre,latitud,longitud)
+
+
+color<-c("#e31a1c")
+Spp_Names<-conj$nombre %>% unique()
+pal<-colorFactor(color, domain=Spp_Names)
+
+m<-leaflet() %>% addTiles() %>%
+  addAwesomeMarkers(data=conj, lat=~latitud, lng=~longitud)
+
+m %>% addLegend(data=dataset, "bottomleft", pal=pal,
+                  values=~nombre, title="Ciudad",
+                  opacity=1, group="Ciudad")
+```
+

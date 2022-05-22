@@ -2,4 +2,6 @@
 title: "Objetivo"
 ---
 
-El proposito de este trabajo es realizar un analisis de la informacion, considerando el conjunto de datos seleccionado, con el fin de mostrar informacion relevante de las ventas realizadas en forma diaria y mensual. Asimismo, detectar patrones de comportamiento de los datos y realizar predicciones de las ventas futuras que tendra el Supermercado.Para tal fin, este informe mostrara graficos estadisticos de las ventas realizadas y luego, utilizaremos un conjunto de algoritmos de aprendizaje supervisado para realizar la prediccion @ 30 dias de las ventas futuras. Mediante un conjunto de metricas de regresion, seleccionaremos al algoritmo que mejor ajuste tiene y por lo tanto obtiene una prediccion mas fiable.
+El propósito de este trabajo es realizar un análisis de la información, considerando el conjunto de datos seleccionado, con el fin de mostrar información relevante de las ventas realizadas en forma diaria y mensual. Asimismo, detectar patrones de comportamiento de los datos y realizar predicciones de las ventas futuras que tendrá el Supermercado. Para tal fin, este informe mostrara gráficos estadísticos de las ventas realizadas y luego, utilizaremos un conjunto de algoritmos de aprendizaje supervisado para realizar la predicción @ 30 días de las ventas futuras. Mediante un conjunto de métricas de regresión, seleccionaremos al algoritmo que mejor ajuste tiene y por lo tanto obtiene una predicción más fiable.
+
+

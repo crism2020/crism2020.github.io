@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Proyección de ventas</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">KPI VENTAS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    INTRODUCCIÓN
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-flag on fa-circle"></span>
+     
+    OBJETIVO
+  </a>
+</li>
+<li>
+  <a href="informe.html">
+    <span class="fa fa-pencil"></span>
+     
+    INFORME ESTADÍSTICO
+  </a>
+</li>
+<li>
+  <a href="forecast.html">
+    <span class="fa fa-search-plus"></span>
+     
+    PROYECCIÓN DE VENTAS
+  </a>
+</li>
+<li>
+  <a href="notas.html">
+    <span class="fa fa-pencil-square-o"></span>
+     
+    CONCLUSIÓN
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Proyección de ventas</h1>
+
+</div>
+
+
+<p>En esta sección se analizarán las ventas realizadas en el
+supermercado con el propósito de predecir el futuro de las mismas @ 30
+días. Utilizaremos un conjunto de algoritmos de aprendizaje supervisado,
+que nos ayuden a predecir tal comportamiento. Además, utilizaremos
+medidas de regresión que nos indicaran cuál de estos algoritmos de
+machine learning obtiene el mejor resultado.</p>
+<p>Para comenzar, vamos a agrupar las ventas según la cantidad de ventas
+diarias.</p>
+<pre class="r"><code>head(df)</code></pre>
+<pre><code>##             Folio              Tiempo   Total    Pago Cajero mes hora      fecha
+## 1 LBVT18010004435 2018-05-01 12:36:48 1121.20 1121.20  MAYTE   5   12 2018-05-01
+## 2 LBVT18010004436 2018-05-01 12:37:18   18.50   20.00  MAYTE   5   12 2018-05-01
+## 3 LBVT18010004437 2018-05-01 12:38:59  160.00  200.00  MAYTE   5   12 2018-05-01
+## 4 LBVT18010004438 2018-05-01 12:47:49  397.50  397.50  MAYTE   5   12 2018-05-01
+## 5 LBVT18010004439 2018-05-01 12:48:16   22.00   50.00  MAYTE   5   12 2018-05-01
+## 6 LBVT18010004440 2018-05-01 12:53:07 1314.19 1314.19  MAYTE   5   12 2018-05-01</code></pre>
+<pre class="r"><code>class(df)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>set&lt;-data.frame(df$fecha,df$Total)
+head(set)</code></pre>
+<pre><code>##     df.fecha df.Total
+## 1 2018-05-01  1121.20
+## 2 2018-05-01    18.50
+## 3 2018-05-01   160.00
+## 4 2018-05-01   397.50
+## 5 2018-05-01    22.00
+## 6 2018-05-01  1314.19</code></pre>
+<pre class="r"><code>class(set)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>names(set)=c(&quot;fecha&quot;,&quot;Total&quot;)
+#agrupo por fecha
+datos&lt;-set %&gt;%
+    group_by(fecha)%&gt;%
+    summarise(n=n())
+datos</code></pre>
+<pre><code>## # A tibble: 123 x 2
+##    fecha          n
+##    &lt;date&gt;     &lt;int&gt;
+##  1 2018-05-01   709
+##  2 2018-05-02   582
+##  3 2018-05-03   587
+##  4 2018-05-04   605
+##  5 2018-05-05   752
+##  6 2018-05-06   936
+##  7 2018-05-07   691
+##  8 2018-05-08   571
+##  9 2018-05-09   571
+## 10 2018-05-10   595
+## # ... with 113 more rows</code></pre>
+<pre class="r"><code>names(datos)&lt;-c(&quot;fecha&quot;,&quot;Cantxdia&quot;)</code></pre>
+<p>El esquema de distribución es el siguiente:</p>
+<pre class="r"><code>ggplot()+
+  geom_point(datos, mapping=aes(x=fecha, y=Cantxdia), color=&#39;darkgreen&#39;)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>El siguiente paso es verificar si los datos están normalizados para
+así trabajar con un conjunto de datos balanceado. Para lograr normalizar
+los datos, utilizo la técnica <strong>minmax</strong>.</p>
+<pre class="r"><code>test&lt;-as.data.frame(datos$Cantxdia)
+names(test)&lt;-c(&quot;Cantidad&quot;)
+norm_minmax&lt;-function(x){
+                        (x-min(x))/(max(x)-min(x))}
+normalise_total&lt;-as.data.frame(lapply(test,norm_minmax))
+head(normalise_total)</code></pre>
+<pre><code>##     Cantidad
+## 1 0.21986607
+## 2 0.07812500
+## 3 0.08370536
+## 4 0.10379464
+## 5 0.26785714
+## 6 0.47321429</code></pre>
+<pre class="r"><code>library(dplyr)
+normalise_total %&gt;% summarise (Min=min(Cantidad),
+                                 Q1=quantile(Cantidad, probs=.25),
+                                 Median=median(Cantidad),
+                                 Q3=quantile(Cantidad, probs=.75),
+                                 Max=max(Cantidad),
+                                 Mean=mean(Cantidad),
+                                 SD=sd(Cantidad),
+                                 n=n(),
+                                 Missing=sum(is.na(Cantidad)))</code></pre>
+<pre><code>##   Min         Q1    Median        Q3 Max      Mean        SD   n Missing
+## 1   0 0.08314732 0.1383929 0.2332589   1 0.1953397 0.1692383 123       0</code></pre>
+<p>Gráfico normalizado (los valores se encuentran en el rango entre “0”
+y “1”)</p>
+<pre class="r"><code>#grafico normalizado
+df3&lt;-data.frame(datos$fecha,normalise_total$Cantidad)
+names(df3)&lt;-c(&quot;Fecha&quot;, &quot;Cantidad&quot;)
+head(df3)</code></pre>
+<pre><code>##        Fecha   Cantidad
+## 1 2018-05-01 0.21986607
+## 2 2018-05-02 0.07812500
+## 3 2018-05-03 0.08370536
+## 4 2018-05-04 0.10379464
+## 5 2018-05-05 0.26785714
+## 6 2018-05-06 0.47321429</code></pre>
+<pre class="r"><code>ggplot()+
+  geom_point(df3, mapping=aes(x=Fecha, y=Cantidad), color=&#39;darkgreen&#39;)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>A continuación, seleccionamos un set de algoritmos para predecir el
+comportamiento del total de las ventas @ 30 días. Estos algoritmos son
+los siguientes:</p>
+<ul>
+<li><strong>Prophet</strong></li>
+<li><strong>Random Forest</strong></li>
+<li><strong>Arima</strong></li>
+<li><strong>Prophet Boost </strong></li>
+</ul>
+<p>Luego, mediante un conjunto de métricas de regresión, determinaremos
+el mejor resultado de predicción.</p>
+<div id="algoritmo-prophet" class="section level1">
+<h1>Algoritmo Prophet</h1>
+<pre class="r"><code>library(prophet)
+names(df3)=c(&quot;ds&quot;,&quot;y&quot;)
+model1&lt;-prophet(df3)</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre class="r"><code>future&lt;-make_future_dataframe(model1, periods=30)
+tail(future)</code></pre>
+<pre><code>##             ds
+## 148 2018-09-25
+## 149 2018-09-26
+## 150 2018-09-27
+## 151 2018-09-28
+## 152 2018-09-29
+## 153 2018-09-30</code></pre>
+<pre class="r"><code>forecast1&lt;-predict(model1,future)
+tail(forecast1[c(&#39;ds&#39;,&#39;yhat&#39;,&#39;yhat_lower&#39;,&#39;yhat_upper&#39;)])</code></pre>
+<pre><code>##             ds      yhat yhat_lower yhat_upper
+## 148 2018-09-25 0.2534788  0.1741497  0.3376490
+## 149 2018-09-26 0.2228780  0.1401086  0.3062482
+## 150 2018-09-27 0.2083764  0.1261002  0.2887412
+## 151 2018-09-28 0.2360824  0.1572468  0.3132278
+## 152 2018-09-29 0.3780882  0.3030356  0.4591617
+## 153 2018-09-30 0.6825190  0.5957972  0.7614195</code></pre>
+<pre class="r"><code>plot(model1, forecast1)+labs(y=&quot;Total de ventas&quot;, x=&quot;Periodo&quot;, t=&quot;Pronostico de cantidad de ventas @ 30 dias&quot;)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>prophet_plot_components(model1,forecast1)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>library(prophet)
+names(datos)=c(&quot;ds&quot;,&quot;y&quot;)
+model1&lt;-prophet(datos)</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre class="r"><code>future&lt;-make_future_dataframe(model1, periods=30)
+tail(future)</code></pre>
+<pre><code>##             ds
+## 148 2018-09-25
+## 149 2018-09-26
+## 150 2018-09-27
+## 151 2018-09-28
+## 152 2018-09-29
+## 153 2018-09-30</code></pre>
+<pre class="r"><code>forecast1&lt;-predict(model1,future)
+tail(forecast1[c(&#39;ds&#39;,&#39;yhat&#39;,&#39;yhat_lower&#39;,&#39;yhat_upper&#39;)])</code></pre>
+<pre><code>##             ds      yhat yhat_lower yhat_upper
+## 148 2018-09-25  749.7571   676.7779   823.6441
+## 149 2018-09-26  722.5498   650.9195   797.6096
+## 150 2018-09-27  709.7468   637.5736   779.8971
+## 151 2018-09-28  734.7246   659.1074   809.3526
+## 152 2018-09-29  862.4343   792.2295   933.3656
+## 153 2018-09-30 1135.4239  1067.0922  1211.3583</code></pre>
+<pre class="r"><code>plot(model1, forecast1)+labs(y=&quot;Total de ventas&quot;, x=&quot;Periodo&quot;, t=&quot;Pronostico de cantidad de ventas @ 30 dias&quot;)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>prophet_plot_components(model1,forecast1)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>Como se puede observar en los gráficos precedentes, se observa que la
+cantidad de ventas @ 30 días tiende a aumentar. Asimismo, los sabados y
+domingos es donde se producen mayor cantidad de ventas. En cambio, el
+día jueves es aquel en donde menos ventas realiza el supermercado.</p>
+</div>
+<div id="random-forest-arima" class="section level1">
+<h1>Random Forest / Arima</h1>
+<pre class="r"><code># utilizo paquete tidymodels
+library(tidymodels)
+library(timetk)
+
+names(datos)&lt;-c(&quot;fecha&quot;,&quot;Cantxdia&quot;)
+#train/test split time serie
+datos %&gt;%
+  plot_time_series(fecha,Cantxdia, .interactive=FALSE)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># Conjunto de entrenamiento 70% y testeo con 30%
+splits&lt;-datos %&gt;%
+  time_series_split(assess=&quot;37 days&quot;, cumulative=TRUE)</code></pre>
+<pre><code>## Using date_var: fecha</code></pre>
+<pre class="r"><code>splits %&gt;%
+    tk_time_series_cv_plan() %&gt;%
+    plot_time_series_cv_plan(fecha, Cantxdia, .interactive=FALSE)</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>#MODELING
+library(modeltime)
+model_fit_arima_ponderado&lt;-arima_reg() %&gt;%
+  set_engine(&quot;auto_arima&quot;) %&gt;%
+  fit(Cantxdia ~ fecha, training (splits))</code></pre>
+<pre><code>## frequency = 7 observations per 1 week</code></pre>
+<pre class="r"><code>model_fit_arima_ponderado</code></pre>
+<pre><code>## parsnip model object
+## 
+## Series: outcome 
+## ARIMA(0,0,1)(0,1,1)[7] 
+## 
+## Coefficients:
+##          ma1     sma1
+##       0.3642  -0.8362
+## s.e.  0.0994   0.1395
+## 
+## sigma^2 = 1764:  log likelihood = -410.6
+## AIC=827.19   AICc=827.51   BIC=834.3</code></pre>
+<pre class="r"><code>model_fit_prophet&lt;-prophet_reg() %&gt;%
+  set_engine(&quot;prophet&quot;, yearly.seasonality=TRUE) %&gt;%
+  fit(Cantxdia ~ fecha, training(splits))</code></pre>
+<pre><code>## Warning: The following arguments cannot be manually modified and were removed: yearly.seasonality.</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre class="r"><code>model_fit_prophet</code></pre>
+<pre><code>## parsnip model object
+## 
+## PROPHET Model
+## - growth: &#39;linear&#39;
+## - n.changepoints: 25
+## - changepoint.range: 0.8
+## - yearly.seasonality: &#39;auto&#39;
+## - weekly.seasonality: &#39;auto&#39;
+## - daily.seasonality: &#39;auto&#39;
+## - seasonality.mode: &#39;additive&#39;
+## - changepoint.prior.scale: 0.05
+## - seasonality.prior.scale: 10
+## - holidays.prior.scale: 10
+## - logistic_cap: NULL
+## - logistic_floor: NULL
+## - extra_regressors: 0</code></pre>
+<pre class="r"><code>#Random Forest 
+recipe_spec&lt;-recipe(Cantxdia~fecha, training(splits)) %&gt;%
+  step_timeseries_signature(fecha) %&gt;%
+  step_fourier(fecha, period=365, K=10) %&gt;%
+  step_dummy(all_nominal())
+
+recipe_spec %&gt;% prep() %&gt;% juice()</code></pre>
+<pre><code>## # A tibble: 86 x 64
+##    fecha      Cantxdia fecha_index.num fecha_year fecha_year.iso fecha_half fecha_quarter fecha_month
+##    &lt;date&gt;        &lt;int&gt;           &lt;dbl&gt;      &lt;int&gt;          &lt;int&gt;      &lt;int&gt;         &lt;int&gt;       &lt;int&gt;
+##  1 2018-05-01      709      1525132800       2018           2018          1             2           5
+##  2 2018-05-02      582      1525219200       2018           2018          1             2           5
+##  3 2018-05-03      587      1525305600       2018           2018          1             2           5
+##  4 2018-05-04      605      1525392000       2018           2018          1             2           5
+##  5 2018-05-05      752      1525478400       2018           2018          1             2           5
+##  6 2018-05-06      936      1525564800       2018           2018          1             2           5
+##  7 2018-05-07      691      1525651200       2018           2018          1             2           5
+##  8 2018-05-08      571      1525737600       2018           2018          1             2           5
+##  9 2018-05-09      571      1525824000       2018           2018          1             2           5
+## 10 2018-05-10      595      1525910400       2018           2018          1             2           5
+## # ... with 76 more rows, and 56 more variables: fecha_month.xts &lt;int&gt;, fecha_day &lt;int&gt;, fecha_hour &lt;int&gt;,
+## #   fecha_minute &lt;int&gt;, fecha_second &lt;int&gt;, fecha_hour12 &lt;int&gt;, fecha_am.pm &lt;int&gt;, fecha_wday &lt;int&gt;,
+## #   fecha_wday.xts &lt;int&gt;, fecha_mday &lt;int&gt;, fecha_qday &lt;int&gt;, fecha_yday &lt;int&gt;, fecha_mweek &lt;int&gt;,
+## #   fecha_week &lt;int&gt;, fecha_week.iso &lt;int&gt;, fecha_week2 &lt;int&gt;, fecha_week3 &lt;int&gt;, fecha_week4 &lt;int&gt;,
+## #   fecha_mday7 &lt;int&gt;, fecha_sin365_K1 &lt;dbl&gt;, fecha_cos365_K1 &lt;dbl&gt;, fecha_sin365_K2 &lt;dbl&gt;,
+## #   fecha_cos365_K2 &lt;dbl&gt;, fecha_sin365_K3 &lt;dbl&gt;, fecha_cos365_K3 &lt;dbl&gt;, fecha_sin365_K4 &lt;dbl&gt;,
+## #   fecha_cos365_K4 &lt;dbl&gt;, fecha_sin365_K5 &lt;dbl&gt;, fecha_cos365_K5 &lt;dbl&gt;, fecha_sin365_K6 &lt;dbl&gt;, ...</code></pre>
+<pre class="r"><code>model_spec_rf &lt;- rand_forest(tree=500, min_n=10) %&gt;%
+  set_engine(&quot;randomForest&quot;)
+
+fit_wflow_rf &lt;-
+  workflows::workflow() %&gt;%
+  workflows::add_recipe(recipe_spec %&gt;% step_rm(fecha)) %&gt;%
+  workflows::add_model(model_spec_rf) %&gt;%
+  fit(training(splits))</code></pre>
+<p>#Prophet Boost</p>
+<pre class="r"><code>model_spec_prophet_boost &lt;- prophet_boost() %&gt;%
+  set_engine(&quot;prophet_xgboost&quot;, yearly.seasonality=TRUE)
+
+
+fit_wflow_prophet_boost &lt;- workflows::workflow() %&gt;%
+  workflows::add_recipe(recipe_spec) %&gt;%
+  workflows::add_model(model_spec_prophet_boost) %&gt;%
+  fit(training(splits))</code></pre>
+<pre><code>## Warning: The following arguments cannot be manually modified and were removed: yearly.seasonality.</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre class="r"><code>model_spec_prophet_boost &lt;- prophet_boost() %&gt;%
+  set_engine(&quot;prophet_xgboost&quot;, yearly.seasonality=TRUE)
+
+
+fit_wflow_prophet_boost &lt;- workflows::workflow() %&gt;%
+  workflows::add_recipe(recipe_spec) %&gt;%
+  workflows::add_model(model_spec_prophet_boost) %&gt;%
+  fit(training(splits))</code></pre>
+<pre><code>## Warning: The following arguments cannot be manually modified and were removed: yearly.seasonality.</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.
+## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+</div>
+<div id="evaluación-de-los-modelos" class="section level1">
+<h1>Evaluación de los modelos</h1>
+<pre class="r"><code>model_table&lt;-modeltime_table(
+  model_fit_arima_ponderado,
+  model_fit_prophet,
+  fit_wflow_rf,
+  fit_wflow_prophet_boost)
+model_table</code></pre>
+<pre><code>## # Modeltime Table
+## # A tibble: 4 x 3
+##   .model_id .model     .model_desc              
+##       &lt;int&gt; &lt;list&gt;     &lt;chr&gt;                    
+## 1         1 &lt;fit[+]&gt;   ARIMA(0,0,1)(0,1,1)[7]   
+## 2         2 &lt;fit[+]&gt;   PROPHET                  
+## 3         3 &lt;workflow&gt; RANDOMFOREST             
+## 4         4 &lt;workflow&gt; PROPHET W/ XGBOOST ERRORS</code></pre>
+</div>
+<div id="calibración" class="section level1">
+<h1>Calibración</h1>
+<pre class="r"><code>calibration_table&lt;-model_table %&gt;%
+  modeltime_calibrate(testing(splits))
+calibration_table %&gt;% modeltime_accuracy()</code></pre>
+<pre><code>## # A tibble: 4 x 9
+##   .model_id .model_desc               .type   mae  mape  mase smape  rmse   rsq
+##       &lt;int&gt; &lt;chr&gt;                     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1         1 ARIMA(0,0,1)(0,1,1)[7]    Test   72.5  8.54 0.482  9.25 115.  0.788
+## 2         2 PROPHET                   Test   55.8  6.53 0.371  6.88  96.7 0.813
+## 3         3 RANDOMFOREST              Test   71.4  8.28 0.475  8.97 117.  0.769
+## 4         4 PROPHET W/ XGBOOST ERRORS Test   62.2  7.51 0.414  7.87 106.  0.732</code></pre>
+<pre class="r"><code>calibration_table %&gt;%
+    modeltime_forecast(
+    new_data=testing(splits),
+    actual_data=datos) %&gt;%
+ plot_modeltime_forecast(.interactive=FALSE)</code></pre>
+<pre><code>## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -Inf</code></pre>
+<p><img src="forecast_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>El resultado de los cuatro algoritmos utilizados, determina que el
+algoritmo “prophet” obtiene valores más óptimos en la predicción de
+valores, con un <strong>mae</strong> relativamente bajo y un
+<strong>rsq</strong> de 0.8. La proyección de ventas @ días es la
+siguiente:</p>
+</div>
+<div id="proyección" class="section level1">
+<h1>Proyección</h1>
+<pre class="r"><code>future_forecast_tbl&lt;-calibration_table %&gt;%
+  modeltime_refit(datos) %&gt;%
+  modeltime_forecast(
+    h=&quot;30 days&quot;,
+    actual_data=datos
+    )</code></pre>
+<pre><code>## frequency = 7 observations per 1 week</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Warning: The following arguments cannot be manually modified and were removed: yearly.seasonality.</code></pre>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.
+## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre class="r"><code>future_forecast_tbl %&gt;%
+  plot_modeltime_forecast()</code></pre>
+<div id="htmlwidget-17c86323d99abf43db80" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-17c86323d99abf43db80">{"x":{"data":[{"x":["2018-05-01","2018-05-02","2018-05-03","2018-05-04","2018-05-05","2018-05-06","2018-05-07","2018-05-08","2018-05-09","2018-05-10","2018-05-11","2018-05-12","2018-05-13","2018-05-14","2018-05-15","2018-05-16","2018-05-17","2018-05-18","2018-05-19","2018-05-20","2018-05-21","2018-05-22","2018-05-23","2018-05-24","2018-05-25","2018-05-26","2018-05-27","2018-05-28","2018-05-29","2018-05-30","2018-05-31","2018-06-01","2018-06-02","2018-06-03","2018-06-04","2018-06-05","2018-06-06","2018-06-07","2018-06-08","2018-06-09","2018-06-10","2018-06-11","2018-06-12","2018-06-13","2018-06-14","2018-06-15","2018-06-16","2018-06-17","2018-06-18","2018-06-19","2018-06-20","2018-06-21","2018-06-22","2018-06-23","2018-06-24","2018-06-25","2018-06-26","2018-06-27","2018-06-28","2018-06-29","2018-06-30","2018-07-01","2018-07-02","2018-07-03","2018-07-04","2018-07-05","2018-07-06","2018-07-07","2018-07-08","2018-07-09","2018-07-10","2018-07-11","2018-07-12","2018-07-13","2018-07-14","2018-07-15","2018-07-16","2018-07-17","2018-07-18","2018-07-19","2018-07-20","2018-07-21","2018-07-22","2018-07-23","2018-07-24","2018-07-25","2018-07-26","2018-07-27","2018-07-28","2018-07-29","2018-07-30","2018-07-31","2018-08-01","2018-08-02","2018-08-03","2018-08-04","2018-08-05","2018-08-06","2018-08-07","2018-08-08","2018-08-09","2018-08-10","2018-08-11","2018-08-12","2018-08-13","2018-08-14","2018-08-15","2018-08-16","2018-08-17","2018-08-18","2018-08-19","2018-08-20","2018-08-21","2018-08-22","2018-08-23","2018-08-24","2018-08-25","2018-08-26","2018-08-27","2018-08-28","2018-08-29","2018-08-30","2018-08-31","2018-08-31","2018-08-30","2018-08-29","2018-08-28","2018-08-27","2018-08-26","2018-08-25","2018-08-24","2018-08-23","2018-08-22","2018-08-21","2018-08-20","2018-08-19","2018-08-18","2018-08-17","2018-08-16","2018-08-15","2018-08-14","2018-08-13","2018-08-12","2018-08-11","2018-08-10","2018-08-09","2018-08-08","2018-08-07","2018-08-06","2018-08-05","2018-08-04","2018-08-03","2018-08-02","2018-08-01","2018-07-31","2018-07-30","2018-07-29","2018-07-28","2018-07-27","2018-07-26","2018-07-25","2018-07-24","2018-07-23","2018-07-22","2018-07-21","2018-07-20","2018-07-19","2018-07-18","2018-07-17","2018-07-16","2018-07-15","2018-07-14","2018-07-13","2018-07-12","2018-07-11","2018-07-10","2018-07-09","2018-07-08","2018-07-07","2018-07-06","2018-07-05","2018-07-04","2018-07-03","2018-07-02","2018-07-01","2018-06-30","2018-06-29","2018-06-28","2018-06-27","2018-06-26","2018-06-25","2018-06-24","2018-06-23","2018-06-22","2018-06-21","2018-06-20","2018-06-19","2018-06-18","2018-06-17","2018-06-16","2018-06-15","2018-06-14","2018-06-13","2018-06-12","2018-06-11","2018-06-10","2018-06-09","2018-06-08","2018-06-07","2018-06-06","2018-06-05","2018-06-04","2018-06-03","2018-06-02","2018-06-01","2018-05-31","2018-05-30","2018-05-29","2018-05-28","2018-05-27","2018-05-26","2018-05-25","2018-05-24","2018-05-23","2018-05-22","2018-05-21","2018-05-20","2018-05-19","2018-05-18","2018-05-17","2018-05-16","2018-05-15","2018-05-14","2018-05-13","2018-05-12","2018-05-11","2018-05-10","2018-05-09","2018-05-08","2018-05-07","2018-05-06","2018-05-05","2018-05-04","2018-05-03","2018-05-02","2018-05-01","2018-05-01"],"y":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"text":[".index: 2018-05-01<br />.value:  709.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-02<br />.value:  582.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-03<br />.value:  587.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-04<br />.value:  605.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-05<br />.value:  752.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-06<br />.value:  936.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-07<br />.value:  691.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-08<br />.value:  571.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-09<br />.value:  571.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-10<br />.value:  595.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-11<br />.value:  570.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-12<br />.value:  664.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-13<br />.value:  918.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-14<br />.value:  649.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-15<br />.value:  671.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-16<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-17<br />.value:  617.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-18<br />.value:  536.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-19<br />.value:  629.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-20<br />.value:  882.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-21<br />.value:  614.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-22<br />.value:  554.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-23<br />.value:  572.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-24<br />.value:  540.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-25<br />.value:  579.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-26<br />.value:  696.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-27<br />.value:  933.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-28<br />.value:  653.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-29<br />.value:  572.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-30<br />.value:  622.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-31<br />.value:  570.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-01<br />.value:  536.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-02<br />.value:  722.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-03<br />.value: 1031.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-04<br />.value:  697.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-05<br />.value:  617.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-06<br />.value:  558.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-07<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-08<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-09<br />.value:  696.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-10<br />.value:  967.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-11<br />.value:  673.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-12<br />.value:  580.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-13<br />.value:  563.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-14<br />.value:  540.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-15<br />.value:  578.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-16<br />.value:  763.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-17<br />.value: 1046.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-18<br />.value:  609.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-19<br />.value:  574.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-20<br />.value:  551.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-21<br />.value:  532.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-22<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-23<br />.value:  636.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-24<br />.value:  847.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-25<br />.value:  659.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-26<br />.value:  615.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-27<br />.value:  585.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-28<br />.value:  512.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-29<br />.value:  575.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-30<br />.value:  719.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-01<br />.value:  987.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-02<br />.value:  694.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-03<br />.value:  584.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-04<br />.value:  607.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-05<br />.value:  624.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-06<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-07<br />.value:  762.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-08<br />.value:  953.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-09<br />.value:  709.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-10<br />.value:  578.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-11<br />.value:  543.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-12<br />.value:  604.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-13<br />.value:  641.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-14<br />.value:  767.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-15<br />.value:  891.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-16<br />.value:  649.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-17<br />.value:  603.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-18<br />.value:  609.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-19<br />.value:  586.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-20<br />.value:  669.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-21<br />.value:  763.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-22<br />.value:  987.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-23<br />.value:  689.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-24<br />.value:  602.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-25<br />.value:  597.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-26<br />.value:  583.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-27<br />.value:  593.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-28<br />.value:  693.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-29<br />.value:  923.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-30<br />.value:  720.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-31<br />.value:  704.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-01<br />.value:  646.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-02<br />.value:  582.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-03<br />.value:  643.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-04<br />.value:  757.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-05<br />.value: 1031.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-06<br />.value:  715.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-07<br />.value:  651.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-08<br />.value:  592.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-09<br />.value:  547.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-10<br />.value:  653.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-11<br />.value:  754.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-12<br />.value: 1038.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-13<br />.value:  724.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-14<br />.value:  632.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-15<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-16<br />.value:  612.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-17<br />.value:  672.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-18<br />.value:  845.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-19<br />.value: 1408.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-20<br />.value:  914.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-21<br />.value:  821.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-22<br />.value:  700.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-23<br />.value:  639.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-24<br />.value:  619.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-25<br />.value:  756.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-26<br />.value: 1220.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-27<br />.value:  762.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-28<br />.value:  585.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-29<br />.value:  592.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-30<br />.value:  611.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-31<br />.value:  645.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-31<br />.value:  645.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-30<br />.value:  611.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-29<br />.value:  592.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-28<br />.value:  585.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-27<br />.value:  762.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-26<br />.value: 1220.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-25<br />.value:  756.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-24<br />.value:  619.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-23<br />.value:  639.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-22<br />.value:  700.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-21<br />.value:  821.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-20<br />.value:  914.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-19<br />.value: 1408.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-18<br />.value:  845.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-17<br />.value:  672.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-16<br />.value:  612.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-15<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-14<br />.value:  632.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-13<br />.value:  724.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-12<br />.value: 1038.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-11<br />.value:  754.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-10<br />.value:  653.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-09<br />.value:  547.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-08<br />.value:  592.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-07<br />.value:  651.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-06<br />.value:  715.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-05<br />.value: 1031.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-04<br />.value:  757.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-03<br />.value:  643.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-02<br />.value:  582.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-08-01<br />.value:  646.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-31<br />.value:  704.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-30<br />.value:  720.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-29<br />.value:  923.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-28<br />.value:  693.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-27<br />.value:  593.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-26<br />.value:  583.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-25<br />.value:  597.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-24<br />.value:  602.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-23<br />.value:  689.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-22<br />.value:  987.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-21<br />.value:  763.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-20<br />.value:  669.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-19<br />.value:  586.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-18<br />.value:  609.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-17<br />.value:  603.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-16<br />.value:  649.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-15<br />.value:  891.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-14<br />.value:  767.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-13<br />.value:  641.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-12<br />.value:  604.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-11<br />.value:  543.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-10<br />.value:  578.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-09<br />.value:  709.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-08<br />.value:  953.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-07<br />.value:  762.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-06<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-05<br />.value:  624.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-04<br />.value:  607.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-03<br />.value:  584.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-02<br />.value:  694.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-07-01<br />.value:  987.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-30<br />.value:  719.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-29<br />.value:  575.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-28<br />.value:  512.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-27<br />.value:  585.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-26<br />.value:  615.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-25<br />.value:  659.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-24<br />.value:  847.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-23<br />.value:  636.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-22<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-21<br />.value:  532.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-20<br />.value:  551.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-19<br />.value:  574.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-18<br />.value:  609.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-17<br />.value: 1046.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-16<br />.value:  763.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-15<br />.value:  578.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-14<br />.value:  540.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-13<br />.value:  563.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-12<br />.value:  580.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-11<br />.value:  673.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-10<br />.value:  967.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-09<br />.value:  696.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-08<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-07<br />.value:  588.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-06<br />.value:  558.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-05<br />.value:  617.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-04<br />.value:  697.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-03<br />.value: 1031.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-02<br />.value:  722.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-06-01<br />.value:  536.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-31<br />.value:  570.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-30<br />.value:  622.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-29<br />.value:  572.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-28<br />.value:  653.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-27<br />.value:  933.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-26<br />.value:  696.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-25<br />.value:  579.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-24<br />.value:  540.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-23<br />.value:  572.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-22<br />.value:  554.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-21<br />.value:  614.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-20<br />.value:  882.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-19<br />.value:  629.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-18<br />.value:  536.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-17<br />.value:  617.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-16<br />.value:  613.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-15<br />.value:  671.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-14<br />.value:  649.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-13<br />.value:  918.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-12<br />.value:  664.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-11<br />.value:  570.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-10<br />.value:  595.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-09<br />.value:  571.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-08<br />.value:  571.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-07<br />.value:  691.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-06<br />.value:  936.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-05<br />.value:  752.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-04<br />.value:  605.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-03<br />.value:  587.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-02<br />.value:  582.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-01<br />.value:  709.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL",".index: 2018-05-01<br />.value:  709.0000<br />.conf_lo:        NA<br />.conf_hi:        NA<br />.model_desc: ACTUAL"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(44,62,80,0.2)","dash":"none"},"fill":"toself","fillcolor":"rgba(51,51,51,0.2)","hoveron":"points","name":"ACTUAL","legendgroup":"ACTUAL","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30","2018-09-30","2018-09-29","2018-09-28","2018-09-27","2018-09-26","2018-09-25","2018-09-24","2018-09-23","2018-09-22","2018-09-21","2018-09-20","2018-09-19","2018-09-18","2018-09-17","2018-09-16","2018-09-15","2018-09-14","2018-09-13","2018-09-12","2018-09-11","2018-09-10","2018-09-09","2018-09-08","2018-09-07","2018-09-06","2018-09-05","2018-09-04","2018-09-03","2018-09-02","2018-09-01","2018-09-01"],"y":[574.892442076211,1092.04567705055,615.20775020577,483.014787945772,422.074713913821,398.605498504843,403.932642672587,550.368582649522,1039.280093726,572.458696997756,416.454127789029,391.624297959784,390.727427516301,411.294071396253,563.402272825526,1067.32385539204,595.178930488779,451.82982106995,407.808096063096,394.914460029591,407.381602569097,556.475107138277,1052.41912071416,583.103552056224,433.028304171263,399.206711110291,392.689130716348,409.461006106289,560.156765456743,1060.34070706253,1514.77194813318,1014.58800652739,863.892247176939,847.120371786998,853.637952180941,887.459545241913,1037.53479312687,1506.85036178481,1010.90634820893,861.812843639747,849.345701100241,862.239337133746,906.2610621406,1049.61017155943,1521.75509646269,1017.83351389618,865.725312466903,845.158668586952,846.055539030435,870.88536885968,1026.88993806841,1493.71133479665,1004.79982372017,858.363883743238,853.036739575493,876.505954984471,937.446029016422,1069.63899127642,1546.4769181212,1029.32368314686,574.892442076211],"text":[".index: 2018-09-01<br />.value:  802.1081<br />.conf_lo:  574.8924<br />.conf_hi: 1029.3237<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-02<br />.value: 1319.2613<br />.conf_lo: 1092.0457<br />.conf_hi: 1546.4769<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-03<br />.value:  842.4234<br />.conf_lo:  615.2078<br />.conf_hi: 1069.6390<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-04<br />.value:  710.2304<br />.conf_lo:  483.0148<br />.conf_hi:  937.4460<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-05<br />.value:  649.2903<br />.conf_lo:  422.0747<br />.conf_hi:  876.5060<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-06<br />.value:  625.8211<br />.conf_lo:  398.6055<br />.conf_hi:  853.0367<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-07<br />.value:  631.1483<br />.conf_lo:  403.9326<br />.conf_hi:  858.3639<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-08<br />.value:  777.5842<br />.conf_lo:  550.3686<br />.conf_hi: 1004.7998<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-09<br />.value: 1266.4957<br />.conf_lo: 1039.2801<br />.conf_hi: 1493.7113<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-10<br />.value:  799.6743<br />.conf_lo:  572.4587<br />.conf_hi: 1026.8899<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-11<br />.value:  643.6697<br />.conf_lo:  416.4541<br />.conf_hi:  870.8854<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-12<br />.value:  618.8399<br />.conf_lo:  391.6243<br />.conf_hi:  846.0555<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-13<br />.value:  617.9430<br />.conf_lo:  390.7274<br />.conf_hi:  845.1587<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-14<br />.value:  638.5097<br />.conf_lo:  411.2941<br />.conf_hi:  865.7253<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-15<br />.value:  790.6179<br />.conf_lo:  563.4023<br />.conf_hi: 1017.8335<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-16<br />.value: 1294.5395<br />.conf_lo: 1067.3239<br />.conf_hi: 1521.7551<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-17<br />.value:  822.3946<br />.conf_lo:  595.1789<br />.conf_hi: 1049.6102<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-18<br />.value:  679.0454<br />.conf_lo:  451.8298<br />.conf_hi:  906.2611<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-19<br />.value:  635.0237<br />.conf_lo:  407.8081<br />.conf_hi:  862.2393<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-20<br />.value:  622.1301<br />.conf_lo:  394.9145<br />.conf_hi:  849.3457<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-21<br />.value:  634.5972<br />.conf_lo:  407.3816<br />.conf_hi:  861.8128<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-22<br />.value:  783.6907<br />.conf_lo:  556.4751<br />.conf_hi: 1010.9063<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-23<br />.value: 1279.6347<br />.conf_lo: 1052.4191<br />.conf_hi: 1506.8504<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-24<br />.value:  810.3192<br />.conf_lo:  583.1036<br />.conf_hi: 1037.5348<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-25<br />.value:  660.2439<br />.conf_lo:  433.0283<br />.conf_hi:  887.4595<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-26<br />.value:  626.4223<br />.conf_lo:  399.2067<br />.conf_hi:  853.6380<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-27<br />.value:  619.9048<br />.conf_lo:  392.6891<br />.conf_hi:  847.1204<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-28<br />.value:  636.6766<br />.conf_lo:  409.4610<br />.conf_hi:  863.8922<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-29<br />.value:  787.3724<br />.conf_lo:  560.1568<br />.conf_hi: 1014.5880<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-30<br />.value: 1287.5563<br />.conf_lo: 1060.3407<br />.conf_hi: 1514.7719<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-30<br />.value: 1287.5563<br />.conf_lo: 1060.3407<br />.conf_hi: 1514.7719<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-29<br />.value:  787.3724<br />.conf_lo:  560.1568<br />.conf_hi: 1014.5880<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-28<br />.value:  636.6766<br />.conf_lo:  409.4610<br />.conf_hi:  863.8922<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-27<br />.value:  619.9048<br />.conf_lo:  392.6891<br />.conf_hi:  847.1204<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-26<br />.value:  626.4223<br />.conf_lo:  399.2067<br />.conf_hi:  853.6380<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-25<br />.value:  660.2439<br />.conf_lo:  433.0283<br />.conf_hi:  887.4595<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-24<br />.value:  810.3192<br />.conf_lo:  583.1036<br />.conf_hi: 1037.5348<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-23<br />.value: 1279.6347<br />.conf_lo: 1052.4191<br />.conf_hi: 1506.8504<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-22<br />.value:  783.6907<br />.conf_lo:  556.4751<br />.conf_hi: 1010.9063<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-21<br />.value:  634.5972<br />.conf_lo:  407.3816<br />.conf_hi:  861.8128<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-20<br />.value:  622.1301<br />.conf_lo:  394.9145<br />.conf_hi:  849.3457<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-19<br />.value:  635.0237<br />.conf_lo:  407.8081<br />.conf_hi:  862.2393<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-18<br />.value:  679.0454<br />.conf_lo:  451.8298<br />.conf_hi:  906.2611<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-17<br />.value:  822.3946<br />.conf_lo:  595.1789<br />.conf_hi: 1049.6102<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-16<br />.value: 1294.5395<br />.conf_lo: 1067.3239<br />.conf_hi: 1521.7551<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-15<br />.value:  790.6179<br />.conf_lo:  563.4023<br />.conf_hi: 1017.8335<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-14<br />.value:  638.5097<br />.conf_lo:  411.2941<br />.conf_hi:  865.7253<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-13<br />.value:  617.9430<br />.conf_lo:  390.7274<br />.conf_hi:  845.1587<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-12<br />.value:  618.8399<br />.conf_lo:  391.6243<br />.conf_hi:  846.0555<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-11<br />.value:  643.6697<br />.conf_lo:  416.4541<br />.conf_hi:  870.8854<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-10<br />.value:  799.6743<br />.conf_lo:  572.4587<br />.conf_hi: 1026.8899<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-09<br />.value: 1266.4957<br />.conf_lo: 1039.2801<br />.conf_hi: 1493.7113<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-08<br />.value:  777.5842<br />.conf_lo:  550.3686<br />.conf_hi: 1004.7998<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-07<br />.value:  631.1483<br />.conf_lo:  403.9326<br />.conf_hi:  858.3639<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-06<br />.value:  625.8211<br />.conf_lo:  398.6055<br />.conf_hi:  853.0367<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-05<br />.value:  649.2903<br />.conf_lo:  422.0747<br />.conf_hi:  876.5060<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-04<br />.value:  710.2304<br />.conf_lo:  483.0148<br />.conf_hi:  937.4460<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-03<br />.value:  842.4234<br />.conf_lo:  615.2078<br />.conf_hi: 1069.6390<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-02<br />.value: 1319.2613<br />.conf_lo: 1092.0457<br />.conf_hi: 1546.4769<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-01<br />.value:  802.1081<br />.conf_lo:  574.8924<br />.conf_hi: 1029.3237<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-01<br />.value:  802.1081<br />.conf_lo:  574.8924<br />.conf_hi: 1029.3237<br />.model_desc: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(227,26,28,0.2)","dash":"none"},"fill":"toself","fillcolor":"rgba(51,51,51,0.2)","hoveron":"points","name":"1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]","legendgroup":"1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30","2018-09-30","2018-09-29","2018-09-28","2018-09-27","2018-09-26","2018-09-25","2018-09-24","2018-09-23","2018-09-22","2018-09-21","2018-09-20","2018-09-19","2018-09-18","2018-09-17","2018-09-16","2018-09-15","2018-09-14","2018-09-13","2018-09-12","2018-09-11","2018-09-10","2018-09-09","2018-09-08","2018-09-07","2018-09-06","2018-09-05","2018-09-04","2018-09-03","2018-09-02","2018-09-01","2018-09-01"],"y":[621.412313341541,894.401836957889,590.699212830579,521.273479221481,494.066196091593,481.263130036435,506.24100938002,633.95069012967,906.940213746215,603.237589618561,533.811856009337,506.604572880031,493.801506824738,518.779386168481,646.489066917893,919.478590534472,615.775966406711,546.35023279796,519.142949667936,506.339883613041,531.317762956561,659.027443706575,932.016967322763,628.31434319539,558.888609586154,531.681326456814,518.878260401638,543.856139745402,671.565820494705,944.555344111111,1326.29235621488,1053.30283259848,925.593151849174,900.61527250541,913.418338560586,940.625621689927,1010.05135529916,1313.75397942654,1040.76445581035,913.054775060333,888.076895716813,900.879961771709,928.087244901733,997.512978510483,1301.21560263824,1028.22607902166,900.516398272253,875.53851892851,888.341584983803,915.54886811311,984.974601722333,1288.67722584999,1015.68770223344,887.978021483793,863.000142140207,875.803208195366,903.010491325253,972.436224934351,1276.13884906166,1003.14932544531,621.412313341541],"text":[".index: 2018-09-01<br />.value:  812.2808<br />.conf_lo:  621.4123<br />.conf_hi: 1003.1493<br />.model_desc: 2_PROPHET",".index: 2018-09-02<br />.value: 1085.2703<br />.conf_lo:  894.4018<br />.conf_hi: 1276.1388<br />.model_desc: 2_PROPHET",".index: 2018-09-03<br />.value:  781.5677<br />.conf_lo:  590.6992<br />.conf_hi:  972.4362<br />.model_desc: 2_PROPHET",".index: 2018-09-04<br />.value:  712.1420<br />.conf_lo:  521.2735<br />.conf_hi:  903.0105<br />.model_desc: 2_PROPHET",".index: 2018-09-05<br />.value:  684.9347<br />.conf_lo:  494.0662<br />.conf_hi:  875.8032<br />.model_desc: 2_PROPHET",".index: 2018-09-06<br />.value:  672.1316<br />.conf_lo:  481.2631<br />.conf_hi:  863.0001<br />.model_desc: 2_PROPHET",".index: 2018-09-07<br />.value:  697.1095<br />.conf_lo:  506.2410<br />.conf_hi:  887.9780<br />.model_desc: 2_PROPHET",".index: 2018-09-08<br />.value:  824.8192<br />.conf_lo:  633.9507<br />.conf_hi: 1015.6877<br />.model_desc: 2_PROPHET",".index: 2018-09-09<br />.value: 1097.8087<br />.conf_lo:  906.9402<br />.conf_hi: 1288.6772<br />.model_desc: 2_PROPHET",".index: 2018-09-10<br />.value:  794.1061<br />.conf_lo:  603.2376<br />.conf_hi:  984.9746<br />.model_desc: 2_PROPHET",".index: 2018-09-11<br />.value:  724.6804<br />.conf_lo:  533.8119<br />.conf_hi:  915.5489<br />.model_desc: 2_PROPHET",".index: 2018-09-12<br />.value:  697.4731<br />.conf_lo:  506.6046<br />.conf_hi:  888.3416<br />.model_desc: 2_PROPHET",".index: 2018-09-13<br />.value:  684.6700<br />.conf_lo:  493.8015<br />.conf_hi:  875.5385<br />.model_desc: 2_PROPHET",".index: 2018-09-14<br />.value:  709.6479<br />.conf_lo:  518.7794<br />.conf_hi:  900.5164<br />.model_desc: 2_PROPHET",".index: 2018-09-15<br />.value:  837.3576<br />.conf_lo:  646.4891<br />.conf_hi: 1028.2261<br />.model_desc: 2_PROPHET",".index: 2018-09-16<br />.value: 1110.3471<br />.conf_lo:  919.4786<br />.conf_hi: 1301.2156<br />.model_desc: 2_PROPHET",".index: 2018-09-17<br />.value:  806.6445<br />.conf_lo:  615.7760<br />.conf_hi:  997.5130<br />.model_desc: 2_PROPHET",".index: 2018-09-18<br />.value:  737.2187<br />.conf_lo:  546.3502<br />.conf_hi:  928.0872<br />.model_desc: 2_PROPHET",".index: 2018-09-19<br />.value:  710.0115<br />.conf_lo:  519.1429<br />.conf_hi:  900.8800<br />.model_desc: 2_PROPHET",".index: 2018-09-20<br />.value:  697.2084<br />.conf_lo:  506.3399<br />.conf_hi:  888.0769<br />.model_desc: 2_PROPHET",".index: 2018-09-21<br />.value:  722.1863<br />.conf_lo:  531.3178<br />.conf_hi:  913.0548<br />.model_desc: 2_PROPHET",".index: 2018-09-22<br />.value:  849.8959<br />.conf_lo:  659.0274<br />.conf_hi: 1040.7645<br />.model_desc: 2_PROPHET",".index: 2018-09-23<br />.value: 1122.8855<br />.conf_lo:  932.0170<br />.conf_hi: 1313.7540<br />.model_desc: 2_PROPHET",".index: 2018-09-24<br />.value:  819.1828<br />.conf_lo:  628.3143<br />.conf_hi: 1010.0514<br />.model_desc: 2_PROPHET",".index: 2018-09-25<br />.value:  749.7571<br />.conf_lo:  558.8886<br />.conf_hi:  940.6256<br />.model_desc: 2_PROPHET",".index: 2018-09-26<br />.value:  722.5498<br />.conf_lo:  531.6813<br />.conf_hi:  913.4183<br />.model_desc: 2_PROPHET",".index: 2018-09-27<br />.value:  709.7468<br />.conf_lo:  518.8783<br />.conf_hi:  900.6153<br />.model_desc: 2_PROPHET",".index: 2018-09-28<br />.value:  734.7246<br />.conf_lo:  543.8561<br />.conf_hi:  925.5932<br />.model_desc: 2_PROPHET",".index: 2018-09-29<br />.value:  862.4343<br />.conf_lo:  671.5658<br />.conf_hi: 1053.3028<br />.model_desc: 2_PROPHET",".index: 2018-09-30<br />.value: 1135.4239<br />.conf_lo:  944.5553<br />.conf_hi: 1326.2924<br />.model_desc: 2_PROPHET",".index: 2018-09-30<br />.value: 1135.4239<br />.conf_lo:  944.5553<br />.conf_hi: 1326.2924<br />.model_desc: 2_PROPHET",".index: 2018-09-29<br />.value:  862.4343<br />.conf_lo:  671.5658<br />.conf_hi: 1053.3028<br />.model_desc: 2_PROPHET",".index: 2018-09-28<br />.value:  734.7246<br />.conf_lo:  543.8561<br />.conf_hi:  925.5932<br />.model_desc: 2_PROPHET",".index: 2018-09-27<br />.value:  709.7468<br />.conf_lo:  518.8783<br />.conf_hi:  900.6153<br />.model_desc: 2_PROPHET",".index: 2018-09-26<br />.value:  722.5498<br />.conf_lo:  531.6813<br />.conf_hi:  913.4183<br />.model_desc: 2_PROPHET",".index: 2018-09-25<br />.value:  749.7571<br />.conf_lo:  558.8886<br />.conf_hi:  940.6256<br />.model_desc: 2_PROPHET",".index: 2018-09-24<br />.value:  819.1828<br />.conf_lo:  628.3143<br />.conf_hi: 1010.0514<br />.model_desc: 2_PROPHET",".index: 2018-09-23<br />.value: 1122.8855<br />.conf_lo:  932.0170<br />.conf_hi: 1313.7540<br />.model_desc: 2_PROPHET",".index: 2018-09-22<br />.value:  849.8959<br />.conf_lo:  659.0274<br />.conf_hi: 1040.7645<br />.model_desc: 2_PROPHET",".index: 2018-09-21<br />.value:  722.1863<br />.conf_lo:  531.3178<br />.conf_hi:  913.0548<br />.model_desc: 2_PROPHET",".index: 2018-09-20<br />.value:  697.2084<br />.conf_lo:  506.3399<br />.conf_hi:  888.0769<br />.model_desc: 2_PROPHET",".index: 2018-09-19<br />.value:  710.0115<br />.conf_lo:  519.1429<br />.conf_hi:  900.8800<br />.model_desc: 2_PROPHET",".index: 2018-09-18<br />.value:  737.2187<br />.conf_lo:  546.3502<br />.conf_hi:  928.0872<br />.model_desc: 2_PROPHET",".index: 2018-09-17<br />.value:  806.6445<br />.conf_lo:  615.7760<br />.conf_hi:  997.5130<br />.model_desc: 2_PROPHET",".index: 2018-09-16<br />.value: 1110.3471<br />.conf_lo:  919.4786<br />.conf_hi: 1301.2156<br />.model_desc: 2_PROPHET",".index: 2018-09-15<br />.value:  837.3576<br />.conf_lo:  646.4891<br />.conf_hi: 1028.2261<br />.model_desc: 2_PROPHET",".index: 2018-09-14<br />.value:  709.6479<br />.conf_lo:  518.7794<br />.conf_hi:  900.5164<br />.model_desc: 2_PROPHET",".index: 2018-09-13<br />.value:  684.6700<br />.conf_lo:  493.8015<br />.conf_hi:  875.5385<br />.model_desc: 2_PROPHET",".index: 2018-09-12<br />.value:  697.4731<br />.conf_lo:  506.6046<br />.conf_hi:  888.3416<br />.model_desc: 2_PROPHET",".index: 2018-09-11<br />.value:  724.6804<br />.conf_lo:  533.8119<br />.conf_hi:  915.5489<br />.model_desc: 2_PROPHET",".index: 2018-09-10<br />.value:  794.1061<br />.conf_lo:  603.2376<br />.conf_hi:  984.9746<br />.model_desc: 2_PROPHET",".index: 2018-09-09<br />.value: 1097.8087<br />.conf_lo:  906.9402<br />.conf_hi: 1288.6772<br />.model_desc: 2_PROPHET",".index: 2018-09-08<br />.value:  824.8192<br />.conf_lo:  633.9507<br />.conf_hi: 1015.6877<br />.model_desc: 2_PROPHET",".index: 2018-09-07<br />.value:  697.1095<br />.conf_lo:  506.2410<br />.conf_hi:  887.9780<br />.model_desc: 2_PROPHET",".index: 2018-09-06<br />.value:  672.1316<br />.conf_lo:  481.2631<br />.conf_hi:  863.0001<br />.model_desc: 2_PROPHET",".index: 2018-09-05<br />.value:  684.9347<br />.conf_lo:  494.0662<br />.conf_hi:  875.8032<br />.model_desc: 2_PROPHET",".index: 2018-09-04<br />.value:  712.1420<br />.conf_lo:  521.2735<br />.conf_hi:  903.0105<br />.model_desc: 2_PROPHET",".index: 2018-09-03<br />.value:  781.5677<br />.conf_lo:  590.6992<br />.conf_hi:  972.4362<br />.model_desc: 2_PROPHET",".index: 2018-09-02<br />.value: 1085.2703<br />.conf_lo:  894.4018<br />.conf_hi: 1276.1388<br />.model_desc: 2_PROPHET",".index: 2018-09-01<br />.value:  812.2808<br />.conf_lo:  621.4123<br />.conf_hi: 1003.1493<br />.model_desc: 2_PROPHET",".index: 2018-09-01<br />.value:  812.2808<br />.conf_lo:  621.4123<br />.conf_hi: 1003.1493<br />.model_desc: 2_PROPHET"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(24,188,156,0.2)","dash":"none"},"fill":"toself","fillcolor":"rgba(51,51,51,0.2)","hoveron":"points","name":"2_PROPHET","legendgroup":"2_PROPHET","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30","2018-09-30","2018-09-29","2018-09-28","2018-09-27","2018-09-26","2018-09-25","2018-09-24","2018-09-23","2018-09-22","2018-09-21","2018-09-20","2018-09-19","2018-09-18","2018-09-17","2018-09-16","2018-09-15","2018-09-14","2018-09-13","2018-09-12","2018-09-11","2018-09-10","2018-09-09","2018-09-08","2018-09-07","2018-09-06","2018-09-05","2018-09-04","2018-09-03","2018-09-02","2018-09-01","2018-09-01"],"y":[519.352508335016,954.749086112793,502.03616150962,404.691836112794,389.982535319144,384.632653573112,399.149186112794,523.168056747715,946.828353573111,497.791044049302,403.285586906445,389.341355954064,383.096152779461,399.96663214454,518.206063096921,943.916840874699,492.857328176286,402.939606747715,388.666739287397,385.618026588985,400.45548214454,516.079309922318,944.219768652476,498.108977382635,406.045190081049,394.898818652478,388.252566271525,409.396456747715,525.064429763588,956.588556747715,1418.29417817292,986.770051188793,871.102078172921,849.95818769673,856.604440077683,867.750811506254,959.814598807841,1405.92539007768,977.784931347523,862.161103569746,847.32364801419,850.372360712603,864.64522817292,954.562949601492,1405.6224622999,979.911684522126,861.672253569746,844.801774204667,851.04697737927,864.991208331651,959.496665474507,1408.53397499832,984.87367817292,860.854807538,846.338274998318,851.688156744349,866.397457538,963.741782934825,1416.454707538,981.058129760222,519.352508335016],"text":[".index: 2018-09-01<br />.value:  750.2053<br />.conf_lo:  519.3525<br />.conf_hi:  981.0581<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-02<br />.value: 1185.6019<br />.conf_lo:  954.7491<br />.conf_hi: 1416.4547<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-03<br />.value:  732.8890<br />.conf_lo:  502.0362<br />.conf_hi:  963.7418<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-04<br />.value:  635.5446<br />.conf_lo:  404.6918<br />.conf_hi:  866.3975<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-05<br />.value:  620.8353<br />.conf_lo:  389.9825<br />.conf_hi:  851.6882<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-06<br />.value:  615.4855<br />.conf_lo:  384.6327<br />.conf_hi:  846.3383<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-07<br />.value:  630.0020<br />.conf_lo:  399.1492<br />.conf_hi:  860.8548<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-08<br />.value:  754.0209<br />.conf_lo:  523.1681<br />.conf_hi:  984.8737<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-09<br />.value: 1177.6812<br />.conf_lo:  946.8284<br />.conf_hi: 1408.5340<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-10<br />.value:  728.6439<br />.conf_lo:  497.7910<br />.conf_hi:  959.4967<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-11<br />.value:  634.1384<br />.conf_lo:  403.2856<br />.conf_hi:  864.9912<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-12<br />.value:  620.1942<br />.conf_lo:  389.3414<br />.conf_hi:  851.0470<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-13<br />.value:  613.9490<br />.conf_lo:  383.0962<br />.conf_hi:  844.8018<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-14<br />.value:  630.8194<br />.conf_lo:  399.9666<br />.conf_hi:  861.6723<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-15<br />.value:  749.0589<br />.conf_lo:  518.2061<br />.conf_hi:  979.9117<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-16<br />.value: 1174.7697<br />.conf_lo:  943.9168<br />.conf_hi: 1405.6225<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-17<br />.value:  723.7101<br />.conf_lo:  492.8573<br />.conf_hi:  954.5629<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-18<br />.value:  633.7924<br />.conf_lo:  402.9396<br />.conf_hi:  864.6452<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-19<br />.value:  619.5196<br />.conf_lo:  388.6667<br />.conf_hi:  850.3724<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-20<br />.value:  616.4708<br />.conf_lo:  385.6180<br />.conf_hi:  847.3236<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-21<br />.value:  631.3083<br />.conf_lo:  400.4555<br />.conf_hi:  862.1611<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-22<br />.value:  746.9321<br />.conf_lo:  516.0793<br />.conf_hi:  977.7849<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-23<br />.value: 1175.0726<br />.conf_lo:  944.2198<br />.conf_hi: 1405.9254<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-24<br />.value:  728.9618<br />.conf_lo:  498.1090<br />.conf_hi:  959.8146<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-25<br />.value:  636.8980<br />.conf_lo:  406.0452<br />.conf_hi:  867.7508<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-26<br />.value:  625.7516<br />.conf_lo:  394.8988<br />.conf_hi:  856.6044<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-27<br />.value:  619.1054<br />.conf_lo:  388.2526<br />.conf_hi:  849.9582<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-28<br />.value:  640.2493<br />.conf_lo:  409.3965<br />.conf_hi:  871.1021<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-29<br />.value:  755.9172<br />.conf_lo:  525.0644<br />.conf_hi:  986.7701<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-30<br />.value: 1187.4414<br />.conf_lo:  956.5886<br />.conf_hi: 1418.2942<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-30<br />.value: 1187.4414<br />.conf_lo:  956.5886<br />.conf_hi: 1418.2942<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-29<br />.value:  755.9172<br />.conf_lo:  525.0644<br />.conf_hi:  986.7701<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-28<br />.value:  640.2493<br />.conf_lo:  409.3965<br />.conf_hi:  871.1021<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-27<br />.value:  619.1054<br />.conf_lo:  388.2526<br />.conf_hi:  849.9582<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-26<br />.value:  625.7516<br />.conf_lo:  394.8988<br />.conf_hi:  856.6044<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-25<br />.value:  636.8980<br />.conf_lo:  406.0452<br />.conf_hi:  867.7508<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-24<br />.value:  728.9618<br />.conf_lo:  498.1090<br />.conf_hi:  959.8146<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-23<br />.value: 1175.0726<br />.conf_lo:  944.2198<br />.conf_hi: 1405.9254<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-22<br />.value:  746.9321<br />.conf_lo:  516.0793<br />.conf_hi:  977.7849<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-21<br />.value:  631.3083<br />.conf_lo:  400.4555<br />.conf_hi:  862.1611<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-20<br />.value:  616.4708<br />.conf_lo:  385.6180<br />.conf_hi:  847.3236<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-19<br />.value:  619.5196<br />.conf_lo:  388.6667<br />.conf_hi:  850.3724<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-18<br />.value:  633.7924<br />.conf_lo:  402.9396<br />.conf_hi:  864.6452<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-17<br />.value:  723.7101<br />.conf_lo:  492.8573<br />.conf_hi:  954.5629<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-16<br />.value: 1174.7697<br />.conf_lo:  943.9168<br />.conf_hi: 1405.6225<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-15<br />.value:  749.0589<br />.conf_lo:  518.2061<br />.conf_hi:  979.9117<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-14<br />.value:  630.8194<br />.conf_lo:  399.9666<br />.conf_hi:  861.6723<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-13<br />.value:  613.9490<br />.conf_lo:  383.0962<br />.conf_hi:  844.8018<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-12<br />.value:  620.1942<br />.conf_lo:  389.3414<br />.conf_hi:  851.0470<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-11<br />.value:  634.1384<br />.conf_lo:  403.2856<br />.conf_hi:  864.9912<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-10<br />.value:  728.6439<br />.conf_lo:  497.7910<br />.conf_hi:  959.4967<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-09<br />.value: 1177.6812<br />.conf_lo:  946.8284<br />.conf_hi: 1408.5340<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-08<br />.value:  754.0209<br />.conf_lo:  523.1681<br />.conf_hi:  984.8737<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-07<br />.value:  630.0020<br />.conf_lo:  399.1492<br />.conf_hi:  860.8548<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-06<br />.value:  615.4855<br />.conf_lo:  384.6327<br />.conf_hi:  846.3383<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-05<br />.value:  620.8353<br />.conf_lo:  389.9825<br />.conf_hi:  851.6882<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-04<br />.value:  635.5446<br />.conf_lo:  404.6918<br />.conf_hi:  866.3975<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-03<br />.value:  732.8890<br />.conf_lo:  502.0362<br />.conf_hi:  963.7418<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-02<br />.value: 1185.6019<br />.conf_lo:  954.7491<br />.conf_hi: 1416.4547<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-01<br />.value:  750.2053<br />.conf_lo:  519.3525<br />.conf_hi:  981.0581<br />.model_desc: 3_RANDOMFOREST",".index: 2018-09-01<br />.value:  750.2053<br />.conf_lo:  519.3525<br />.conf_hi:  981.0581<br />.model_desc: 3_RANDOMFOREST"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(204,190,147,0.2)","dash":"none"},"fill":"toself","fillcolor":"rgba(51,51,51,0.2)","hoveron":"points","name":"3_RANDOMFOREST","legendgroup":"3_RANDOMFOREST","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30","2018-09-30","2018-09-30","2018-09-29","2018-09-28","2018-09-27","2018-09-26","2018-09-25","2018-09-24","2018-09-23","2018-09-22","2018-09-21","2018-09-20","2018-09-19","2018-09-18","2018-09-17","2018-09-16","2018-09-15","2018-09-14","2018-09-13","2018-09-12","2018-09-11","2018-09-10","2018-09-09","2018-09-08","2018-09-07","2018-09-06","2018-09-05","2018-09-04","2018-09-03","2018-09-02","2018-09-01","2018-09-01"],"y":[608.342336538059,890.05216512038,576.378303095197,501.256381751495,474.986342083217,472.475281090161,485.737599997498,582.678523403856,855.844564506973,563.230876231369,490.840438108596,465.969725719036,445.09753734929,493.303901800454,624.320484004792,884.992247630679,588.260992292591,503.48756047217,486.993305296248,463.086998274556,500.793946374179,619.563269915942,894.62952235293,576.749699815523,495.447791279529,474.931471895306,453.995478899212,486.444522946345,600.969934744232,894.450856218304,894.450856218304,1310.88167687136,1017.40075539729,902.875343599403,870.42629955227,891.362292548364,911.878611932587,993.18052046858,1311.06034300599,1035.994090569,917.224767027236,879.517818927613,903.424125949305,919.918381125228,1004.69181294565,1301.42306828374,1040.75130465785,909.734722453512,861.528358002347,882.400546372093,907.271258761653,979.661696884427,1272.27538516003,999.109344056913,902.168420650556,888.906101743219,891.417162736274,917.687202404553,992.809123748254,1306.48298577344,1024.77315719112,608.342336538059],"text":[".index: 2018-09-01<br />.value:  816.5577<br />.conf_lo:  608.3423<br />.conf_hi: 1024.7732<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-02<br />.value: 1098.2676<br />.conf_lo:  890.0522<br />.conf_hi: 1306.4830<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-03<br />.value:  784.5937<br />.conf_lo:  576.3783<br />.conf_hi:  992.8091<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-04<br />.value:  709.4718<br />.conf_lo:  501.2564<br />.conf_hi:  917.6872<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-05<br />.value:  683.2018<br />.conf_lo:  474.9863<br />.conf_hi:  891.4172<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-06<br />.value:  680.6907<br />.conf_lo:  472.4753<br />.conf_hi:  888.9061<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-07<br />.value:  693.9530<br />.conf_lo:  485.7376<br />.conf_hi:  902.1684<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-08<br />.value:  790.8939<br />.conf_lo:  582.6785<br />.conf_hi:  999.1093<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-09<br />.value: 1064.0600<br />.conf_lo:  855.8446<br />.conf_hi: 1272.2754<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-10<br />.value:  771.4463<br />.conf_lo:  563.2309<br />.conf_hi:  979.6617<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-11<br />.value:  699.0558<br />.conf_lo:  490.8404<br />.conf_hi:  907.2713<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-12<br />.value:  674.1851<br />.conf_lo:  465.9697<br />.conf_hi:  882.4005<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-13<br />.value:  653.3129<br />.conf_lo:  445.0975<br />.conf_hi:  861.5284<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-14<br />.value:  701.5193<br />.conf_lo:  493.3039<br />.conf_hi:  909.7347<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-15<br />.value:  832.5359<br />.conf_lo:  624.3205<br />.conf_hi: 1040.7513<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-16<br />.value: 1093.2077<br />.conf_lo:  884.9922<br />.conf_hi: 1301.4231<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-17<br />.value:  796.4764<br />.conf_lo:  588.2610<br />.conf_hi: 1004.6918<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-18<br />.value:  711.7030<br />.conf_lo:  503.4876<br />.conf_hi:  919.9184<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-19<br />.value:  695.2087<br />.conf_lo:  486.9933<br />.conf_hi:  903.4241<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-20<br />.value:  671.3024<br />.conf_lo:  463.0870<br />.conf_hi:  879.5178<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-21<br />.value:  709.0094<br />.conf_lo:  500.7939<br />.conf_hi:  917.2248<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-22<br />.value:  827.7787<br />.conf_lo:  619.5633<br />.conf_hi: 1035.9941<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-23<br />.value: 1102.8449<br />.conf_lo:  894.6295<br />.conf_hi: 1311.0603<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-24<br />.value:  784.9651<br />.conf_lo:  576.7497<br />.conf_hi:  993.1805<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-25<br />.value:  703.6632<br />.conf_lo:  495.4478<br />.conf_hi:  911.8786<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-26<br />.value:  683.1469<br />.conf_lo:  474.9315<br />.conf_hi:  891.3623<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-27<br />.value:  662.2109<br />.conf_lo:  453.9955<br />.conf_hi:  870.4263<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-28<br />.value:  694.6599<br />.conf_lo:  486.4445<br />.conf_hi:  902.8753<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-29<br />.value:  809.1853<br />.conf_lo:  600.9699<br />.conf_hi: 1017.4008<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-30<br />.value: 1102.6663<br />.conf_lo:  894.4509<br />.conf_hi: 1310.8817<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-30<br />.value: 1102.6663<br />.conf_lo:  894.4509<br />.conf_hi: 1310.8817<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-30<br />.value: 1102.6663<br />.conf_lo:  894.4509<br />.conf_hi: 1310.8817<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-29<br />.value:  809.1853<br />.conf_lo:  600.9699<br />.conf_hi: 1017.4008<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-28<br />.value:  694.6599<br />.conf_lo:  486.4445<br />.conf_hi:  902.8753<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-27<br />.value:  662.2109<br />.conf_lo:  453.9955<br />.conf_hi:  870.4263<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-26<br />.value:  683.1469<br />.conf_lo:  474.9315<br />.conf_hi:  891.3623<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-25<br />.value:  703.6632<br />.conf_lo:  495.4478<br />.conf_hi:  911.8786<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-24<br />.value:  784.9651<br />.conf_lo:  576.7497<br />.conf_hi:  993.1805<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-23<br />.value: 1102.8449<br />.conf_lo:  894.6295<br />.conf_hi: 1311.0603<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-22<br />.value:  827.7787<br />.conf_lo:  619.5633<br />.conf_hi: 1035.9941<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-21<br />.value:  709.0094<br />.conf_lo:  500.7939<br />.conf_hi:  917.2248<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-20<br />.value:  671.3024<br />.conf_lo:  463.0870<br />.conf_hi:  879.5178<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-19<br />.value:  695.2087<br />.conf_lo:  486.9933<br />.conf_hi:  903.4241<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-18<br />.value:  711.7030<br />.conf_lo:  503.4876<br />.conf_hi:  919.9184<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-17<br />.value:  796.4764<br />.conf_lo:  588.2610<br />.conf_hi: 1004.6918<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-16<br />.value: 1093.2077<br />.conf_lo:  884.9922<br />.conf_hi: 1301.4231<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-15<br />.value:  832.5359<br />.conf_lo:  624.3205<br />.conf_hi: 1040.7513<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-14<br />.value:  701.5193<br />.conf_lo:  493.3039<br />.conf_hi:  909.7347<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-13<br />.value:  653.3129<br />.conf_lo:  445.0975<br />.conf_hi:  861.5284<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-12<br />.value:  674.1851<br />.conf_lo:  465.9697<br />.conf_hi:  882.4005<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-11<br />.value:  699.0558<br />.conf_lo:  490.8404<br />.conf_hi:  907.2713<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-10<br />.value:  771.4463<br />.conf_lo:  563.2309<br />.conf_hi:  979.6617<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-09<br />.value: 1064.0600<br />.conf_lo:  855.8446<br />.conf_hi: 1272.2754<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-08<br />.value:  790.8939<br />.conf_lo:  582.6785<br />.conf_hi:  999.1093<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-07<br />.value:  693.9530<br />.conf_lo:  485.7376<br />.conf_hi:  902.1684<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-06<br />.value:  680.6907<br />.conf_lo:  472.4753<br />.conf_hi:  888.9061<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-05<br />.value:  683.2018<br />.conf_lo:  474.9863<br />.conf_hi:  891.4172<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-04<br />.value:  709.4718<br />.conf_lo:  501.2564<br />.conf_hi:  917.6872<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-03<br />.value:  784.5937<br />.conf_lo:  576.3783<br />.conf_hi:  992.8091<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-02<br />.value: 1098.2676<br />.conf_lo:  890.0522<br />.conf_hi: 1306.4830<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-01<br />.value:  816.5577<br />.conf_lo:  608.3423<br />.conf_hi: 1024.7732<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-01<br />.value:  816.5577<br />.conf_lo:  608.3423<br />.conf_hi: 1024.7732<br />.model_desc: 4_PROPHET W/ XGBOOST ERRORS"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(166,206,227,0.2)","dash":"none"},"fill":"toself","fillcolor":"rgba(51,51,51,0.2)","hoveron":"points","name":"4_PROPHET W/ XGBOOST ERRORS","legendgroup":"4_PROPHET W/ XGBOOST ERRORS","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-05-01","2018-05-02","2018-05-03","2018-05-04","2018-05-05","2018-05-06","2018-05-07","2018-05-08","2018-05-09","2018-05-10","2018-05-11","2018-05-12","2018-05-13","2018-05-14","2018-05-15","2018-05-16","2018-05-17","2018-05-18","2018-05-19","2018-05-20","2018-05-21","2018-05-22","2018-05-23","2018-05-24","2018-05-25","2018-05-26","2018-05-27","2018-05-28","2018-05-29","2018-05-30","2018-05-31","2018-06-01","2018-06-02","2018-06-03","2018-06-04","2018-06-05","2018-06-06","2018-06-07","2018-06-08","2018-06-09","2018-06-10","2018-06-11","2018-06-12","2018-06-13","2018-06-14","2018-06-15","2018-06-16","2018-06-17","2018-06-18","2018-06-19","2018-06-20","2018-06-21","2018-06-22","2018-06-23","2018-06-24","2018-06-25","2018-06-26","2018-06-27","2018-06-28","2018-06-29","2018-06-30","2018-07-01","2018-07-02","2018-07-03","2018-07-04","2018-07-05","2018-07-06","2018-07-07","2018-07-08","2018-07-09","2018-07-10","2018-07-11","2018-07-12","2018-07-13","2018-07-14","2018-07-15","2018-07-16","2018-07-17","2018-07-18","2018-07-19","2018-07-20","2018-07-21","2018-07-22","2018-07-23","2018-07-24","2018-07-25","2018-07-26","2018-07-27","2018-07-28","2018-07-29","2018-07-30","2018-07-31","2018-08-01","2018-08-02","2018-08-03","2018-08-04","2018-08-05","2018-08-06","2018-08-07","2018-08-08","2018-08-09","2018-08-10","2018-08-11","2018-08-12","2018-08-13","2018-08-14","2018-08-15","2018-08-16","2018-08-17","2018-08-18","2018-08-19","2018-08-20","2018-08-21","2018-08-22","2018-08-23","2018-08-24","2018-08-25","2018-08-26","2018-08-27","2018-08-28","2018-08-29","2018-08-30","2018-08-31"],"y":[709,582,587,605,752,936,691,571,571,595,570,664,918,649,671,613,617,536,629,882,614,554,572,540,579,696,933,653,572,622,570,536,722,1031,697,617,558,588,588,696,967,673,580,563,540,578,763,1046,609,574,551,532,588,636,847,659,615,585,512,575,719,987,694,584,607,624,613,762,953,709,578,543,604,641,767,891,649,603,609,586,669,763,987,689,602,597,583,593,693,923,720,704,646,582,643,757,1031,715,651,592,547,653,754,1038,724,632,613,612,672,845,1408,914,821,700,639,619,756,1220,762,585,592,611,645],"text":[".index: 2018-05-01<br />.value:  709.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-02<br />.value:  582.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-03<br />.value:  587.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-04<br />.value:  605.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-05<br />.value:  752.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-06<br />.value:  936.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-07<br />.value:  691.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-08<br />.value:  571.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-09<br />.value:  571.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-10<br />.value:  595.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-11<br />.value:  570.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-12<br />.value:  664.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-13<br />.value:  918.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-14<br />.value:  649.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-15<br />.value:  671.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-16<br />.value:  613.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-17<br />.value:  617.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-18<br />.value:  536.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-19<br />.value:  629.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-20<br />.value:  882.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-21<br />.value:  614.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-22<br />.value:  554.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-23<br />.value:  572.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-24<br />.value:  540.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-25<br />.value:  579.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-26<br />.value:  696.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-27<br />.value:  933.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-28<br />.value:  653.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-29<br />.value:  572.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-30<br />.value:  622.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-05-31<br />.value:  570.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-01<br />.value:  536.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-02<br />.value:  722.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-03<br />.value: 1031.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-04<br />.value:  697.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-05<br />.value:  617.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-06<br />.value:  558.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-07<br />.value:  588.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-08<br />.value:  588.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-09<br />.value:  696.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-10<br />.value:  967.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-11<br />.value:  673.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-12<br />.value:  580.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-13<br />.value:  563.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-14<br />.value:  540.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-15<br />.value:  578.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-16<br />.value:  763.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-17<br />.value: 1046.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-18<br />.value:  609.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-19<br />.value:  574.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-20<br />.value:  551.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-21<br />.value:  532.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-22<br />.value:  588.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-23<br />.value:  636.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-24<br />.value:  847.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-25<br />.value:  659.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-26<br />.value:  615.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-27<br />.value:  585.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-28<br />.value:  512.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-29<br />.value:  575.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-06-30<br />.value:  719.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-01<br />.value:  987.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-02<br />.value:  694.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-03<br />.value:  584.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-04<br />.value:  607.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-05<br />.value:  624.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-06<br />.value:  613.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-07<br />.value:  762.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-08<br />.value:  953.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-09<br />.value:  709.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-10<br />.value:  578.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-11<br />.value:  543.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-12<br />.value:  604.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-13<br />.value:  641.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-14<br />.value:  767.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-15<br />.value:  891.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-16<br />.value:  649.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-17<br />.value:  603.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-18<br />.value:  609.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-19<br />.value:  586.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-20<br />.value:  669.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-21<br />.value:  763.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-22<br />.value:  987.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-23<br />.value:  689.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-24<br />.value:  602.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-25<br />.value:  597.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-26<br />.value:  583.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-27<br />.value:  593.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-28<br />.value:  693.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-29<br />.value:  923.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-30<br />.value:  720.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-07-31<br />.value:  704.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-01<br />.value:  646.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-02<br />.value:  582.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-03<br />.value:  643.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-04<br />.value:  757.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-05<br />.value: 1031.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-06<br />.value:  715.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-07<br />.value:  651.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-08<br />.value:  592.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-09<br />.value:  547.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-10<br />.value:  653.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-11<br />.value:  754.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-12<br />.value: 1038.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-13<br />.value:  724.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-14<br />.value:  632.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-15<br />.value:  613.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-16<br />.value:  612.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-17<br />.value:  672.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-18<br />.value:  845.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-19<br />.value: 1408.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-20<br />.value:  914.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-21<br />.value:  821.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-22<br />.value:  700.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-23<br />.value:  639.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-24<br />.value:  619.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-25<br />.value:  756.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-26<br />.value: 1220.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-27<br />.value:  762.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-28<br />.value:  585.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-29<br />.value:  592.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-30<br />.value:  611.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL",".index: 2018-08-31<br />.value:  645.0000<br />.color_mod: ACTUAL<br />.color_mod: ACTUAL"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(44,62,80,1)","dash":"solid"},"hoveron":"points","name":"ACTUAL","legendgroup":"ACTUAL","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30"],"y":[802.108062611536,1319.26129758588,842.423370741095,710.230408481097,649.290334449146,625.821119040168,631.148263207913,777.584203184847,1266.49571426133,799.674317533081,643.669748324355,618.83991849511,617.943048051627,638.509691931578,790.617893360852,1294.53947592736,822.394551024104,679.045441605275,635.023716598421,622.130080564916,634.597223104422,783.690727673602,1279.63474124949,810.319172591549,660.243924706588,626.422331645616,619.904751251673,636.676626641614,787.372385992068,1287.55632759786],"text":[".index: 2018-09-01<br />.value:  802.1081<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-02<br />.value: 1319.2613<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-03<br />.value:  842.4234<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-04<br />.value:  710.2304<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-05<br />.value:  649.2903<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-06<br />.value:  625.8211<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-07<br />.value:  631.1483<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-08<br />.value:  777.5842<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-09<br />.value: 1266.4957<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-10<br />.value:  799.6743<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-11<br />.value:  643.6697<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-12<br />.value:  618.8399<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-13<br />.value:  617.9430<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-14<br />.value:  638.5097<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-15<br />.value:  790.6179<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-16<br />.value: 1294.5395<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-17<br />.value:  822.3946<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-18<br />.value:  679.0454<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-19<br />.value:  635.0237<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-20<br />.value:  622.1301<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-21<br />.value:  634.5972<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-22<br />.value:  783.6907<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-23<br />.value: 1279.6347<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-24<br />.value:  810.3192<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-25<br />.value:  660.2439<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-26<br />.value:  626.4223<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-27<br />.value:  619.9048<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-28<br />.value:  636.6766<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-29<br />.value:  787.3724<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]",".index: 2018-09-30<br />.value: 1287.5563<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]<br />.color_mod: 1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(227,26,28,1)","dash":"solid"},"hoveron":"points","name":"1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]","legendgroup":"1_UPDATE: ARIMA(1,0,0)(1,1,0)[7]","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30"],"y":[812.280819393427,1085.27034300977,781.567718882465,712.141985273367,684.934702143479,672.131636088321,697.109515431907,824.819196181557,1097.8087197981,794.106095670447,724.680362061223,697.473078931917,684.670012876624,709.647892220367,837.357572969779,1110.34709658636,806.644472458597,737.218738849847,710.011455719822,697.208389664927,722.186269008447,849.895949758461,1122.88547337465,819.182849247276,749.75711563804,722.5498325087,709.746766453524,734.724645797288,862.434326546591,1135.423850163],"text":[".index: 2018-09-01<br />.value:  812.2808<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-02<br />.value: 1085.2703<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-03<br />.value:  781.5677<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-04<br />.value:  712.1420<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-05<br />.value:  684.9347<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-06<br />.value:  672.1316<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-07<br />.value:  697.1095<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-08<br />.value:  824.8192<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-09<br />.value: 1097.8087<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-10<br />.value:  794.1061<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-11<br />.value:  724.6804<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-12<br />.value:  697.4731<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-13<br />.value:  684.6700<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-14<br />.value:  709.6479<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-15<br />.value:  837.3576<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-16<br />.value: 1110.3471<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-17<br />.value:  806.6445<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-18<br />.value:  737.2187<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-19<br />.value:  710.0115<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-20<br />.value:  697.2084<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-21<br />.value:  722.1863<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-22<br />.value:  849.8959<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-23<br />.value: 1122.8855<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-24<br />.value:  819.1828<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-25<br />.value:  749.7571<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-26<br />.value:  722.5498<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-27<br />.value:  709.7468<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-28<br />.value:  734.7246<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-29<br />.value:  862.4343<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET",".index: 2018-09-30<br />.value: 1135.4239<br />.color_mod: 2_PROPHET<br />.color_mod: 2_PROPHET"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(24,188,156,1)","dash":"solid"},"hoveron":"points","name":"2_PROPHET","legendgroup":"2_PROPHET","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30"],"y":[750.205319047619,1185.6018968254,732.888972222222,635.544646825397,620.835346031746,615.485464285715,630.001996825397,754.020867460318,1177.68116428571,728.643854761905,634.138397619048,620.194166666667,613.948963492064,630.819442857143,749.058873809523,1174.7696515873,723.710138888889,633.792417460317,619.51955,616.470837301587,631.308292857143,746.93212063492,1175.07257936508,728.961788095238,636.898000793651,625.75162936508,619.105376984128,640.249267460318,755.91724047619,1187.44136746032],"text":[".index: 2018-09-01<br />.value:  750.2053<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-02<br />.value: 1185.6019<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-03<br />.value:  732.8890<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-04<br />.value:  635.5446<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-05<br />.value:  620.8353<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-06<br />.value:  615.4855<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-07<br />.value:  630.0020<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-08<br />.value:  754.0209<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-09<br />.value: 1177.6812<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-10<br />.value:  728.6439<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-11<br />.value:  634.1384<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-12<br />.value:  620.1942<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-13<br />.value:  613.9490<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-14<br />.value:  630.8194<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-15<br />.value:  749.0589<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-16<br />.value: 1174.7697<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-17<br />.value:  723.7101<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-18<br />.value:  633.7924<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-19<br />.value:  619.5196<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-20<br />.value:  616.4708<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-21<br />.value:  631.3083<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-22<br />.value:  746.9321<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-23<br />.value: 1175.0726<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-24<br />.value:  728.9618<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-25<br />.value:  636.8980<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-26<br />.value:  625.7516<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-27<br />.value:  619.1054<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-28<br />.value:  640.2493<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-29<br />.value:  755.9172<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST",".index: 2018-09-30<br />.value: 1187.4414<br />.color_mod: 3_RANDOMFOREST<br />.color_mod: 3_RANDOMFOREST"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(204,190,147,1)","dash":"solid"},"hoveron":"points","name":"3_RANDOMFOREST","legendgroup":"3_RANDOMFOREST","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":["2018-09-01","2018-09-02","2018-09-03","2018-09-04","2018-09-05","2018-09-06","2018-09-07","2018-09-08","2018-09-09","2018-09-10","2018-09-11","2018-09-12","2018-09-13","2018-09-14","2018-09-15","2018-09-16","2018-09-17","2018-09-18","2018-09-19","2018-09-20","2018-09-21","2018-09-22","2018-09-23","2018-09-24","2018-09-25","2018-09-26","2018-09-27","2018-09-28","2018-09-29","2018-09-30"],"y":[816.557746864588,1098.26757544691,784.593713421726,709.471792078024,683.201752409745,680.69069141669,693.953010324027,790.893933730385,1064.0599748335,771.446286557898,699.055848435125,674.185136045565,653.312947675818,701.519312126983,832.53589433132,1093.20765795721,796.476402619119,711.702970798699,695.208715622777,671.302408601084,709.009356700708,827.77868024247,1102.84493267946,784.965110142051,703.663201606058,683.146882221835,662.210889225741,694.659933272874,809.185345070761,1102.66626654483],"text":[".index: 2018-09-01<br />.value:  816.5577<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-02<br />.value: 1098.2676<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-03<br />.value:  784.5937<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-04<br />.value:  709.4718<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-05<br />.value:  683.2018<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-06<br />.value:  680.6907<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-07<br />.value:  693.9530<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-08<br />.value:  790.8939<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-09<br />.value: 1064.0600<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-10<br />.value:  771.4463<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-11<br />.value:  699.0558<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-12<br />.value:  674.1851<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-13<br />.value:  653.3129<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-14<br />.value:  701.5193<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-15<br />.value:  832.5359<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-16<br />.value: 1093.2077<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-17<br />.value:  796.4764<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-18<br />.value:  711.7030<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-19<br />.value:  695.2087<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-20<br />.value:  671.3024<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-21<br />.value:  709.0094<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-22<br />.value:  827.7787<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-23<br />.value: 1102.8449<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-24<br />.value:  784.9651<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-25<br />.value:  703.6632<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-26<br />.value:  683.1469<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-27<br />.value:  662.2109<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-28<br />.value:  694.6599<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-29<br />.value:  809.1853<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS",".index: 2018-09-30<br />.value: 1102.6663<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS<br />.color_mod: 4_PROPHET W/ XGBOOST ERRORS"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(166,206,227,1)","dash":"solid"},"hoveron":"points","name":"4_PROPHET W/ XGBOOST ERRORS","legendgroup":"4_PROPHET W/ XGBOOST ERRORS","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":25.5707762557078,"l":34.337899543379},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187},"title":{"text":"Forecast Plot","font":{"color":"rgba(44,62,80,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"date","autorange":true,"range":["2018-04-23","2018-10-07"],"tickmode":"auto","ticktext":["may.","jun.","jul.","ago.","sep.","oct."],"tickvals":[17652,17683,17713,17744,17775,17805],"categoryorder":"array","categoryarray":["may.","jun.","jul.","ago.","sep.","oct."],"nticks":null,"ticks":"outside","tickcolor":"rgba(204,204,204,1)","ticklen":3.65296803652968,"tickwidth":0.22139200221392,"showticklabels":true,"tickfont":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.22139200221392,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":true,"range":[324.927114512374,1604.64595638829],"tickmode":"auto","ticktext":["400","800","1200","1600"],"tickvals":[400,800,1200,1600],"categoryorder":"array","categoryarray":["400","800","1200","1600"],"nticks":null,"ticks":"outside","tickcolor":"rgba(204,204,204,1)","ticklen":3.65296803652968,"tickwidth":0.22139200221392,"showticklabels":true,"tickfont":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.22139200221392,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(44,62,80,1)","width":0.33208800332088,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(44,62,80,1)","family":"","size":11.689497716895},"title":{"text":"Legend","font":{"color":"rgba(44,62,80,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"2e082df62c16":{"x":{},"y":{},"ymin":{},"ymax":{},"colour":{},"type":"scatter"},"2e0853e8493c":{"x":{},"y":{},"colour":{}}},"cur_data":"2e082df62c16","visdat":{"2e082df62c16":["function (y) ","x"],"2e0853e8493c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+---
+title: "Informe Estadistico"
+---
+A continuación, realizamos un analisis descriptivo de la informacion contenida en el dataset, transformaremos y limpiaremos los datos. Luego, realizaremos un conjunto de esquemas graficos los cuales nos permitiran realizar interesantes conclusiones. 
+
+```{r}
+#Seteo directorio de trabajo
+setwd("C:/CursoR")
+#lectura df (dataframe)
+library(readr)
+df <- read_csv("./files/Supermarkets_Sales.csv",col_names=TRUE)
+df=as.data.frame(df)
+

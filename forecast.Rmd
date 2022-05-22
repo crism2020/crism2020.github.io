@@ -1,0 +1,227 @@
+---
+title: "Proyección de ventas"
+---
+
+En esta sección se analizarán las ventas realizadas en el supermercado con el propósito de predecir el futuro de las mismas @ 30 días.
+Utilizaremos un conjunto de algoritmos de aprendizaje supervisado, que nos ayuden a predecir tal comportamiento.
+Además, utilizaremos medidas de regresión que nos indicaran cuál de estos algoritmos de machine learning obtiene el mejor resultado.
+
+Para comenzar, vamos a agrupar las ventas según la cantidad de ventas diarias.
+
+```{r}
+head(df)
+class(df)
+set<-data.frame(df$fecha,df$Total)
+head(set)
+class(set)
+names(set)=c("fecha","Total")
+#agrupo por fecha
+datos<-set %>%
+    group_by(fecha)%>%
+    summarise(n=n())
+datos
+names(datos)<-c("fecha","Cantxdia")
+
+```
+
+
+El esquema de distribución es el siguiente:
+
+```{r}
+ggplot()+
+  geom_point(datos, mapping=aes(x=fecha, y=Cantxdia), color='darkgreen')
+
+```
+
+
+El siguiente paso es verificar si los datos están normalizados para así trabajar con un conjunto de datos balanceado.
+Para lograr normalizar los datos, utilizo la técnica **minmax**.
+
+
+```{r}
+test<-as.data.frame(datos$Cantxdia)
+names(test)<-c("Cantidad")
+norm_minmax<-function(x){
+                        (x-min(x))/(max(x)-min(x))}
+normalise_total<-as.data.frame(lapply(test,norm_minmax))
+head(normalise_total)
+library(dplyr)
+normalise_total %>% summarise (Min=min(Cantidad),
+                                 Q1=quantile(Cantidad, probs=.25),
+                                 Median=median(Cantidad),
+                                 Q3=quantile(Cantidad, probs=.75),
+                                 Max=max(Cantidad),
+                                 Mean=mean(Cantidad),
+                                 SD=sd(Cantidad),
+                                 n=n(),
+                                 Missing=sum(is.na(Cantidad)))
+```
+
+
+Gráfico normalizado (los valores se encuentran en el rango entre "0" y "1")
+
+
+```{r}
+#grafico normalizado
+df3<-data.frame(datos$fecha,normalise_total$Cantidad)
+names(df3)<-c("Fecha", "Cantidad")
+head(df3)
+
+
+ggplot()+
+  geom_point(df3, mapping=aes(x=Fecha, y=Cantidad), color='darkgreen')
+```
+
+A continuación, seleccionamos un set de algoritmos para predecir el comportamiento del total de las ventas @ 30 días. Estos algoritmos son los siguientes:
+
+- **Prophet**
+- **Random Forest**
+- **Arima**
+- **Prophet Boost **
+
+Luego, mediante un conjunto de métricas de regresión, determinaremos el mejor resultado de predicción. 
+
+# Algoritmo Prophet
+
+```{r}
+library(prophet)
+names(df3)=c("ds","y")
+model1<-prophet(df3)
+future<-make_future_dataframe(model1, periods=30)
+tail(future)
+forecast1<-predict(model1,future)
+tail(forecast1[c('ds','yhat','yhat_lower','yhat_upper')])
+plot(model1, forecast1)+labs(y="Total de ventas", x="Periodo", t="Pronostico de cantidad de ventas @ 30 dias")
+prophet_plot_components(model1,forecast1)
+```
+
+
+```{r}
+library(prophet)
+names(datos)=c("ds","y")
+model1<-prophet(datos)
+future<-make_future_dataframe(model1, periods=30)
+tail(future)
+forecast1<-predict(model1,future)
+tail(forecast1[c('ds','yhat','yhat_lower','yhat_upper')])
+plot(model1, forecast1)+labs(y="Total de ventas", x="Periodo", t="Pronostico de cantidad de ventas @ 30 dias")
+prophet_plot_components(model1,forecast1)
+```
+
+
+Como se puede observar en los gráficos precedentes, se observa que la cantidad de ventas @ 30 días tiende a aumentar. Asimismo, los sabados y domingos es donde se producen mayor cantidad de ventas. En cambio, el día jueves es aquel en donde menos ventas realiza el supermercado.
+
+# Random Forest / Arima
+
+```{r}
+# utilizo paquete tidymodels
+library(tidymodels)
+library(timetk)
+
+names(datos)<-c("fecha","Cantxdia")
+#train/test split time serie
+datos %>%
+  plot_time_series(fecha,Cantxdia, .interactive=FALSE)
+
+# Conjunto de entrenamiento 70% y testeo con 30%
+splits<-datos %>%
+  time_series_split(assess="37 days", cumulative=TRUE)
+
+splits %>%
+    tk_time_series_cv_plan() %>%
+    plot_time_series_cv_plan(fecha, Cantxdia, .interactive=FALSE)
+```
+
+```{r}
+#MODELING
+library(modeltime)
+model_fit_arima_ponderado<-arima_reg() %>%
+  set_engine("auto_arima") %>%
+  fit(Cantxdia ~ fecha, training (splits))
+model_fit_arima_ponderado
+
+model_fit_prophet<-prophet_reg() %>%
+  set_engine("prophet", yearly.seasonality=TRUE) %>%
+  fit(Cantxdia ~ fecha, training(splits))
+model_fit_prophet
+
+#Random Forest 
+recipe_spec<-recipe(Cantxdia~fecha, training(splits)) %>%
+  step_timeseries_signature(fecha) %>%
+  step_fourier(fecha, period=365, K=10) %>%
+  step_dummy(all_nominal())
+
+recipe_spec %>% prep() %>% juice()
+
+model_spec_rf <- rand_forest(tree=500, min_n=10) %>%
+  set_engine("randomForest")
+
+fit_wflow_rf <-
+  workflows::workflow() %>%
+  workflows::add_recipe(recipe_spec %>% step_rm(fecha)) %>%
+  workflows::add_model(model_spec_rf) %>%
+  fit(training(splits))
+```
+
+#Prophet Boost
+
+```{r}
+model_spec_prophet_boost <- prophet_boost() %>%
+  set_engine("prophet_xgboost", yearly.seasonality=TRUE)
+
+
+fit_wflow_prophet_boost <- workflows::workflow() %>%
+  workflows::add_recipe(recipe_spec) %>%
+  workflows::add_model(model_spec_prophet_boost) %>%
+  fit(training(splits))
+model_spec_prophet_boost <- prophet_boost() %>%
+  set_engine("prophet_xgboost", yearly.seasonality=TRUE)
+
+
+fit_wflow_prophet_boost <- workflows::workflow() %>%
+  workflows::add_recipe(recipe_spec) %>%
+  workflows::add_model(model_spec_prophet_boost) %>%
+  fit(training(splits))
+```
+
+# Evaluación de los modelos
+
+```{r}
+model_table<-modeltime_table(
+  model_fit_arima_ponderado,
+  model_fit_prophet,
+  fit_wflow_rf,
+  fit_wflow_prophet_boost)
+model_table
+```
+
+# Calibración
+
+```{r}
+calibration_table<-model_table %>%
+  modeltime_calibrate(testing(splits))
+calibration_table %>% modeltime_accuracy()
+calibration_table %>%
+    modeltime_forecast(
+    new_data=testing(splits),
+    actual_data=datos) %>%
+ plot_modeltime_forecast(.interactive=FALSE)
+```
+
+El resultado de los cuatro algoritmos utilizados, determina que el algoritmo "prophet" obtiene valores más óptimos en la predicción de valores, con un **mae** relativamente bajo y un **rsq** de 0.8.
+La proyección de ventas @ días es la siguiente:
+
+# Proyección
+
+```{r}
+future_forecast_tbl<-calibration_table %>%
+  modeltime_refit(datos) %>%
+  modeltime_forecast(
+    h="30 days",
+    actual_data=datos
+    )
+future_forecast_tbl %>%
+  plot_modeltime_forecast()
+```
+
+

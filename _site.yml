@@ -4,11 +4,20 @@ navbar:
   title: "KPI VENTAS"
   left:
     - text: "INTRODUCCIÓN"
+      icon: fa-home
       href: index.html
     - text: "OBJETIVO"
+      icon: fa-flag on fa-circle
       href: about.html
-    - text: "ORGANIZACIÓN"
-      href: organizacion.html
+    - text: "INFORME ESTADÍSTICO"
+      icon: fa-pencil
+      href: informe.html
+    - text: "PROYECCIÓN DE VENTAS"
+      icon: fa-search-plus
+      href: forecast.html
+    - text: "CONCLUSIÓN"
+      icon: fa-pencil-square-o
+      href: notas.html
     
 output:
   html_document:

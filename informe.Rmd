@@ -1,0 +1,139 @@
+---
+title: "Informe Estadístico"
+---
+A continuación, realizamos un análisis descriptivo de la información contenida en el dataset, transformaremos y limpiaremos los datos. Luego, realizaremos un conjunto de esquemas gráficos los cuales nos permitirán realizar interesantes conclusiones. 
+
+##Análisis de dataset
+
+```{r}
+#Seteo directorio de trabajo
+setwd("C:/CursoR")
+#lectura df (dataframe)
+library(readr)
+df <- read_csv("./files/Supermarkets_Sales.csv",col_names=TRUE)
+df=as.data.frame(df)
+```
+
+El dataset está conformado por 84881 registros, distribuidos en 5 columnas. Estas últimas corresponden a **Folio**, **Cajero**, **Hora**, **Total** y **Pago**
+
+```{r}
+#Cantidad de registros
+dim(df)
+# Cantidad de columnas
+ncol(df)
+```
+
+## Limpieza de dataset
+
+Se realiza un revisión para detectar si el dataset contiene valores nulos y solo vamos a considerar los valores totales mayores a "0".
+
+```{r}
+#chequeo valores nulos
+library(ggplot2)
+library(DataExplorer)
+plot_missing(
+  data=df,
+  title="Porcentaje de valores ausentes",
+  ggtheme=theme_bw(),
+  theme_config=list(legend.position="none"))
+
+df=df[df$Total > 0,]
+head(df)
+```
+
+## Transformación de datos
+
+Para una mejor comprensión, realizamos un cambio de nombres en las variables analizadas.
+
+```{r}
+names(df)=c("Folio","Tiempo", "Total","Pago","Cajero")
+```
+
+Agregamos nuevas columnas al conjunto de datos ("Fecha", "mes", "hora").
+
+```{r}
+library(lubridate)
+library(tidyverse)
+df<-mutate(df, mes=month(df$Tiempo))
+df<-mutate(df, hora=hour(df$Tiempo))
+df<-mutate(df, fecha=date(df$Tiempo))
+head(df)
+```
+
+Una vez que ya tenemos nuestro conjunto de datos transformado y limpio, procedemos a confeccionar un conjunto de gráficos estadísticos con el fin de detectar patrones de comportamiento y así adoptar medidas pertinentes que permitan por ejemplo, incrementar las ventas del supermercado.
+
+### Ventas por cajero
+
+A continuación se muestra un esquema, en la que se demuestra la cantidad de ventas realizadas por cada uno de los cajeros del supermercado.
+
+```{r}
+#graficos por cantidad de venta, según empleado
+library(ggplot2)
+grafico<-ggplot(df,aes(x=Cajero)) + geom_bar(fill="blue") + coord_flip()
+grafico + theme_classic()
+```
+
+Se puede observar que el empleado identificado como "Maricruz", es el que mas ventas ha realizado del grupo.
+
+### Ventas por mes
+
+Se realiza un agrupamiento de la información, considerando el promedio del total de ventas realizadas por mes.
+
+```{r}
+
+#agrupo por mes
+df2<-df %>%
+    group_by(mes)%>%
+#    count(df, "mes")
+    summarise(Prom_total=mean(Total))
+df2
+```
+
+Se observa que el promedio del **Total**, se encuentra en el rango de $184 @ $194, con tendencia alcista.
+
+La cantidad de ventas realizadas por mes, se observan en el siguiente esquema:
+
+```{r}
+grafico<-ggplot(df,aes(x=mes)) + geom_bar(fill="blue") + coord_flip()
+grafico + theme_classic()
+```
+
+Se observa que levemente la cantidad de ventas esta aumentando mes a mes.
+
+### Ventas por hora
+
+Se realiza un agrupamiento de la información, considerando el promedio del total de ventas realizadas por hora.
+
+```{r}
+df3<-df %>%
+  group_by(hora)%>%
+  summarise(Prom_total=mean(Total))
+df3
+```
+
+Los horarios en donde se observa que el cliente realiza un mayor gasto es a las 13 hrs y 21 hrs.
+
+La cantidad de ventas realizadas por hora, se observan en el siguiente esquema:
+
+```{r}
+grafico<-ggplot(df,aes(x=hora)) + geom_bar(fill="blue") + coord_flip()
+grafico + theme_classic()
+```
+
+El horario en que se producen mayor cantidad de ventas es a las 20 hrs
+
+### Ventas por mes y cajero
+
+El gráfico siguiente representa un esquema en la que se detallan la cantidad de ventas por mes, realizadas por cada uno de los cajeros. 
+
+```{r}
+#agrupo por mes y vendedor
+
+ggplot(df,aes(x=mes)) + geom_bar(fill="blue") + facet_wrap(~Cajero, nrow=5)
+
+```
+
+Se puede apreciar que hay muy pocos cajeros (8/21) que han realizado ventas en el periodo comprendido entre mayo y agosto del 2018. El resto solo ha vendido en uno o más meses.
+
+
+

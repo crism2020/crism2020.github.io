@@ -1,0 +1,10 @@
+---
+title: "Conclusión"
+---
+Se realizó un análisis de un dataset referido a ventas de un supermercado de Guanajuato (México).
+En dicho informe, se detallaron las variables de estudio, se realizó una limpieza de los datos, en la que, por ejemplo, se eliminaron los valores nulos. Luego, mediante un conjunto de gráficos descriptivos mostramos la representación de los datos. Finalmente, utilizamos un serie de algoritmos de machine learning, con el fín de predecir las ventas @ 30 días. Los resultados son los siguientes:
+
+- La cantidad de ventas tiende a aumentar con el tiempo.
+- Los días con mayor cantidad de ventas son los sabados y domingos
+- el día con menor venta es el jueves
+- 

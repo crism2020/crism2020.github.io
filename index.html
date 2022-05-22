@@ -32,6 +32,18 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<link href="site_libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.css" rel="stylesheet" />
+<script src="site_libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -246,13 +258,39 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">INTRODUCCIÓN</a>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    INTRODUCCIÓN
+  </a>
 </li>
 <li>
-  <a href="about.html">OBJETIVO</a>
+  <a href="about.html">
+    <span class="fa fa-flag on fa-circle"></span>
+     
+    OBJETIVO
+  </a>
 </li>
 <li>
-  <a href="organizacion.html">ORGANIZACIÓN</a>
+  <a href="informe.html">
+    <span class="fa fa-pencil"></span>
+     
+    INFORME ESTADÍSTICO
+  </a>
+</li>
+<li>
+  <a href="forecast.html">
+    <span class="fa fa-search-plus"></span>
+     
+    PROYECCIÓN DE VENTAS
+  </a>
+</li>
+<li>
+  <a href="notas.html">
+    <span class="fa fa-pencil-square-o"></span>
+     
+    CONCLUSIÓN
+  </a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -272,9 +310,9 @@ $(document).ready(function () {
 
 
 <p>En el presente trabajo, se analiza un set de datos correspondiente a
-un nuevo Supermercado ubicado en Guanajuato, Mexico. Dicho dataset,
-contiene información de las ventas ($ mexicanos) en las siguientes
-variables:</p>
+un nuevo Supermercado ubicado en Guanajuato, México. Dicho dataset,
+contiene información de las ventas ($ mexicanos) realizadas desde mayo @
+agosto del 2018. Las variables de análisis son las siguientes:</p>
 <ul>
 <li><strong>Folio</strong>: ID del ticket de venta</li>
 <li><strong>Hora</strong>: Datetime de la venta</li>
@@ -282,10 +320,33 @@ variables:</p>
 <li><strong>Pago</strong>: Monto ($) abonado por el cliente</li>
 <li><strong>Cajero</strong>: Código de ID del cajero</li>
 </ul>
-<p>La selección del presente conjunto de datos ha sido en forma asaroza,
+<p>La selección del presente conjunto de datos ha sido en forma azarosa,
 su ubicación digital es la siguiente: <a
 href="https://www.kaggle.com/datasets/agasca/retail-sales">Supermarket
 Sales</a>.</p>
+<p>A continuación, se muestra en un mapa la ubicación de Guanajuato:</p>
+<pre class="r"><code>library(sf)
+library(leaflet)
+library(leaflet.extras)
+
+nombre&lt;-&quot;Guanajuato&quot;
+latitud=21.0181
+longitud=-101.258
+conj=data.frame(nombre,latitud,longitud)
+
+
+color&lt;-c(&quot;#e31a1c&quot;)
+Spp_Names&lt;-conj$nombre %&gt;% unique()
+pal&lt;-colorFactor(color, domain=Spp_Names)
+
+m&lt;-leaflet() %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(data=conj, lat=~latitud, lng=~longitud)
+
+m %&gt;% addLegend(data=dataset, &quot;bottomleft&quot;, pal=pal,
+                  values=~nombre, title=&quot;Ciudad&quot;,
+                  opacity=1, group=&quot;Ciudad&quot;)</code></pre>
+<div id="htmlwidget-370bdbb32ed721539b0a" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-370bdbb32ed721539b0a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addAwesomeMarkers","args":[21.0181,-101.258,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#e31a1c"],"labels":["Guanajuato"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"factor","title":"Ciudad","extra":null,"layerId":null,"className":"info legend","group":"Ciudad"}]}],"limits":{"lat":[21.0181,21.0181],"lng":[-101.258,-101.258]}},"evals":[],"jsHooks":[]}</script>
 
 
 
