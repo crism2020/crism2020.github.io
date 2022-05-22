@@ -8,5 +8,6 @@ En dicho informe, se detallaron las variables de estudio, se realizó una limpie
 - Los días con mayor cantidad de ventas son los sabados y domingos
 - El día con menor venta es el jueves
 - El horario con mayor cantidad de ventas es a las 20hrs.
+- El algoritmo **Prophet** obtuvo el valor de predicción mas óptimo.
 
 Sugerimos realizar campañas de promoción de ventas de productos para los días jueves, con el fin de aumentar las ventas. Asimismo, consideramos evaluar la contratación de personal operativo, teniendo en cuenta que las ventas continúan en ascenso.

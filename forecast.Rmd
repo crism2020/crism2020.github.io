@@ -66,6 +66,9 @@ Gráfico normalizado (los valores se encuentran en el rango entre "0" y "1")
 df3<-data.frame(datos$fecha,normalise_total$Cantidad)
 names(df3)<-c("Fecha", "Cantidad")
 head(df3)
+df4<-df3
+head(df4)
+names(df4)<-c("fecha", "Cantxdia")
 
 
 ggplot()+
@@ -105,8 +108,15 @@ tail(future)
 forecast1<-predict(model1,future)
 tail(forecast1[c('ds','yhat','yhat_lower','yhat_upper')])
 plot(model1, forecast1)+labs(y="Total de ventas", x="Periodo", t="Pronostico de cantidad de ventas @ 30 dias")
+```
+
+Se puede observar los resultados obtenidos de la predicción @ 30 días, luego de aplicar el algoritmo de Prophet. La columna **ds** representa la fecha, **yhat** (valor predicado), **yhat_lower**, **yhat_upper** representan los coeficientes mínimos y máximos del intervalo de confianza (95%).
+
+```{r}
 prophet_plot_components(model1,forecast1)
 ```
+
+
 
 
 Como se puede observar en los gráficos precedentes, se observa que la cantidad de ventas @ 30 días tiende a aumentar. Asimismo, los sabados y domingos es donde se producen mayor cantidad de ventas. En cambio, el día jueves es aquel en donde menos ventas realiza el supermercado.
@@ -120,11 +130,11 @@ library(timetk)
 
 names(datos)<-c("fecha","Cantxdia")
 #train/test split time serie
-datos %>%
+df4 %>%
   plot_time_series(fecha,Cantxdia, .interactive=FALSE)
 
 # Conjunto de entrenamiento 70% y testeo con 30%
-splits<-datos %>%
+splits<-df4 %>%
   time_series_split(assess="37 days", cumulative=TRUE)
 
 splits %>%
@@ -163,7 +173,7 @@ fit_wflow_rf <-
   fit(training(splits))
 ```
 
-#Prophet Boost
+# Prophet Boost
 
 ```{r}
 model_spec_prophet_boost <- prophet_boost() %>%
@@ -204,7 +214,7 @@ calibration_table %>% modeltime_accuracy()
 calibration_table %>%
     modeltime_forecast(
     new_data=testing(splits),
-    actual_data=datos) %>%
+    actual_data=df4) %>%
  plot_modeltime_forecast(.interactive=FALSE)
 ```
 
@@ -215,10 +225,10 @@ La proyección de ventas @ días es la siguiente:
 
 ```{r}
 future_forecast_tbl<-calibration_table %>%
-  modeltime_refit(datos) %>%
+  modeltime_refit(df4) %>%
   modeltime_forecast(
     h="30 days",
-    actual_data=datos
+    actual_data=df4
     )
 future_forecast_tbl %>%
   plot_modeltime_forecast()
