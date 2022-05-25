@@ -1,4 +1,4 @@
-name: "KPI Ventas"
+name: "Métricas Ventas Supermercado"
 output_dir: "."
 navbar:
   title: "KPI VENTAS"
