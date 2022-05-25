@@ -1,7 +1,7 @@
 name: "Métricas Ventas Supermercado"
 output_dir: "."
 navbar:
-  title: "KPI VENTAS"
+  title: "Métricas Ventas de Supermercado"
   left:
     - text: "INTRODUCCIÓN"
       icon: fa-home
