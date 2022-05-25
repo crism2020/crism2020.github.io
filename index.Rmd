@@ -33,7 +33,7 @@ pal<-colorFactor(color, domain=Spp_Names)
 m<-leaflet() %>% addTiles() %>%
   addAwesomeMarkers(data=conj, lat=~latitud, lng=~longitud)
 
-m %>% addLegend(data=dataset, "bottomleft", pal=pal,
+m %>% addLegend(data=conj, "bottomleft", pal=pal,
                   values=~nombre, title="Ciudad",
                   opacity=1, group="Ciudad")
 ```

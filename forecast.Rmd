@@ -9,6 +9,17 @@ Además, utilizaremos medidas de regresión que nos indicaran cuál de estos alg
 Para comenzar, vamos a agrupar las ventas según la cantidad de ventas diarias.
 
 ```{r}
+library(readr)
+df <- read_csv("./Supermarkets_Sales.csv",col_names=TRUE)
+df=as.data.frame(df)
+names(df)=c("Folio","Tiempo", "Total","Pago","Cajero")
+df=df[df$Total > 0,]
+library(lubridate)
+library(tidyverse)
+df<-mutate(df, mes=month(df$Tiempo))
+df<-mutate(df, hora=hour(df$Tiempo))
+df<-mutate(df, fecha=date(df$Tiempo))
+
 head(df)
 class(df)
 set<-data.frame(df$fecha,df$Total)
